@@ -27,7 +27,7 @@ jobs:
       with:
         host port: 3306
         container port: 3306 
-        mysql version: 8.1
+        mysql version: latest
         mysql root password: superuser
         mysql database: reservation 
         mysql user: root
