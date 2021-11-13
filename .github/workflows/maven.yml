@@ -25,29 +25,15 @@ jobs:
     - name: Setup MySQL
       uses: mirromutth/mysql-action@v1.1
       with:
-        # The port of host
-        host port: 3306 # optional, default is 3306
-        # The port of container
-        container port:  3306 # optional, default is 3306
-        # --character-set-server - The character set of MySQL server
-        # --collation-server - The character collation of MySQL server
-        # Version of MySQL to use
-        mysql version: latest # optional, default is latest
-        # MYSQL_ROOT_PASSWORD - root superuser password
-        #mysql root password: password# optional, default is 
-        # MYSQL_DATABASE - name for the default database that is created
-        mysql database: reservation # optional, default is 
-        # MYSQL_USER - create the specified user with superuser power for created database
-        mysql user: root # optional, default is 
-        # MYSQL_PASSWORD - specified superuser password which user is power for created database
-        mysql password: password # optional, default is 
-
+        host port: 3306
+        container port: 3306 
+        mysql version: 8.1
+        mysql root password: password
+        mysql database: reservation 
+        mysql user: root
+        mysql password: password
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: RunMavenTest
       uses: Maes95/maven-action@1.0.0
-      with:
-        # If true, build jar of the project
-        package: false # optional, default is false
-        # Test to exclude
-#exclude: # optional
+        
