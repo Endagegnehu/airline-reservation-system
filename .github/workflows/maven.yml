@@ -31,7 +31,7 @@ jobs:
         mysql root password: superuser
         mysql database: reservation 
         mysql user: root
-        mysql password: password
+        mysql password: superuser
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: RunMavenTest
