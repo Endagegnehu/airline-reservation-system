@@ -1,5 +1,6 @@
 package com.example.airlinereservationsystem.domain;
 
+import com.example.airlinereservationsystem.util.constant.Roles;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,5 +16,5 @@ public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    String roleName;
+    Roles roleName;
 }

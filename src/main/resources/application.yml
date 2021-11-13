@@ -1,11 +1,10 @@
 server:
-  port: 8090
-
+  port: 8080
 spring:
   application:
     name: airlineReservationSystem
   datasource:
-    url: jdbc:mysql://localhost:3306/
+    url: jdbc:mysql://localhost:3306/reservation
     username: root
     password: password
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -15,7 +14,7 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
