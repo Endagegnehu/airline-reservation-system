@@ -1,0 +1,21 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: airlineReservationSystem
+  datasource:
+    url: jdbc:mysql://localhost:3306/
+    username: root
+    password: password
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
