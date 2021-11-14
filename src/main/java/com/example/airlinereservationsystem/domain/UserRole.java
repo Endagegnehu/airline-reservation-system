@@ -1,20 +1,5 @@
 package com.example.airlinereservationsystem.domain;
 
-import com.example.airlinereservationsystem.util.constant.Roles;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-@NoArgsConstructor
-@Data
-public class UserRole {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    Roles roleName;
+public enum UserRole {
+    ROLE_ADMIN, ROLE_USER, ROLE_AGENT
 }

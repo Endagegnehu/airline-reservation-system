@@ -5,6 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -20,6 +24,17 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+
+    @Temporal(TemporalType.DATE)
+    private Date dataOfBirth;
+
+    @ElementCollection
+    @CollectionTable(name = "userRoles")
+    private List<UserRole> userRoles = new ArrayList<UserRole>();
+
     @OneToOne
-    private UserRole role;
+    private Address residenceAddress;
+
+
+
 }
