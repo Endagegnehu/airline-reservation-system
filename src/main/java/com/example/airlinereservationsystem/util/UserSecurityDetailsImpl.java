@@ -5,13 +5,10 @@ import com.example.airlinereservationsystem.domain.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class UserSecurityDetailsImpl implements UserDetails {
@@ -24,7 +21,6 @@ public class UserSecurityDetailsImpl implements UserDetails {
         username = user.getUsername();
         password = user.getPassword();
         authorities = user.getRole();
-//                Arrays.stream(user.getRole().split(",")).collect(Collectors.toList());
     }
 
     @Override

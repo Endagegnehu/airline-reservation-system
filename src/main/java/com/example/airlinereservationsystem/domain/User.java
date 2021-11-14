@@ -22,6 +22,6 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<UserRole> role = new ArrayList<>();
 }
