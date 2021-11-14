@@ -9,6 +9,7 @@ import com.example.airlinereservationsystem.dto.UserDto;
 import com.example.airlinereservationsystem.dto.UserRegistrationResponse;
 import com.example.airlinereservationsystem.service.ReservationsService;
 import com.example.airlinereservationsystem.service.ReservationsServiceImplementation;
+import com.example.airlinereservationsystem.service.UserService;
 import com.example.airlinereservationsystem.util.JwtUtil;
 import com.example.airlinereservationsystem.util.constant.Roles;
 import org.modelmapper.ModelMapper;
@@ -26,6 +27,8 @@ public class ReservationsController {
     Logger logger = LoggerFactory.getLogger(TicketsController.class);
     @Autowired
     ReservationsService reservationsService;
+    @Autowired
+    UserService userService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -37,8 +40,13 @@ public class ReservationsController {
     ReservationsServiceImplementation reservationsServiceImpl;
     
     @PostMapping("/reservations")
-    public  Reservations addReservation(@RequestBody ReservationsDto reservationsDto){
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public  ResponseEntity addReservation(@RequestBody ReservationsDto reservationsDto){
+        final Optional<User> user = userService.findUserByID(reservationsDto.getUserId());
+        Reservations reservations = modelMapper.map(user,Reservations.class);
 
+        reservationsService.addReservation(reservations);
+        return ResponseEntity.ok().build(); 
 
     }
 }

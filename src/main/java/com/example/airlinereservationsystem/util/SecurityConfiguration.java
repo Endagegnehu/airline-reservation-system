@@ -42,7 +42,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/user").hasAnyAuthority(Roles.ROLE_USER.toString())
-                .antMatchers("/users").permitAll().
+                .antMatchers("/users").permitAll()
+                .antMatchers("/reservations").permitAll().
                 anyRequest().authenticated().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

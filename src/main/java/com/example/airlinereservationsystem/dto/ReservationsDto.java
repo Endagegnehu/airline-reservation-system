@@ -1,5 +1,7 @@
 package com.example.airlinereservationsystem.dto;
 
+import com.example.airlinereservationsystem.domain.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservationsDto {
-    private String flightInstanceId;
-    private String PassangerId;
+    //private String flightInstanceId;
+    private String userId;
 
 }
