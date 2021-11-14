@@ -1,13 +1,20 @@
 package com.example.airlinereservationsystem.controller;
 
-<<<<<<< HEAD
-
 import com.example.airlinereservationsystem.domain.User;
+import com.example.airlinereservationsystem.domain.UserRole;
 import com.example.airlinereservationsystem.dto.RoleDto;
 import com.example.airlinereservationsystem.dto.UserLoginDto;
 import com.example.airlinereservationsystem.dto.UserDto;
+import com.example.airlinereservationsystem.dto.UserRegistrationResponse;
 import com.example.airlinereservationsystem.service.UserService;
+import com.example.airlinereservationsystem.util.JwtUtil;
+import com.example.airlinereservationsystem.util.constant.Roles;
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +29,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
+    JwtUtil jwtUtil;
+
 
     @GetMapping("/users")
     public List<UserDto> getAllUsers() {
@@ -29,13 +42,24 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public void signup(@RequestBody User user) {
+    public ResponseEntity<?> signup(@RequestBody UserDto userDto) {
+        List<UserRole> userRoles = new ArrayList<>();
+        UserRole userRole = new UserRole();
+        userRole.setRoleName(Roles.ROLE_USER);
+        userRoles.add(userRole);
+        User user = modelMapper.map(userDto,User.class);
+        user.setRole(userRoles);
         userService.signup(user);
+        final Optional<User> currentUser = userService.findUserByUsername(user.getUsername());
+        final UserDetails userDetails = userService.getUserDetails(user.getUsername());
+        final String jwt  = jwtUtil.generateToken(userDetails);
+        logger.info("JWT: " + jwt);
+        return ResponseEntity.ok(new UserRegistrationResponse(jwt));
     }
 
     @PostMapping("/login")
     public void login(@RequestBody UserLoginDto userLoginDto) {
-        boolean loginSuccessful = userService.login(userLoginDto);
+        userService.getUserDetails(userLoginDto.getUsername());
     }
 
     @PostMapping("/admin/add-role")

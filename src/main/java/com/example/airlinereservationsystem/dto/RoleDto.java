@@ -8,6 +8,6 @@ import lombok.Data;
 public class RoleDto {
 
     private UserRole role;
-    private long id;
+    private String userName ;
 
 }

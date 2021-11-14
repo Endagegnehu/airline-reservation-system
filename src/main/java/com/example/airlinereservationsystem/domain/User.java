@@ -29,11 +29,11 @@ public class User {
     @Temporal(TemporalType.DATE)
     private Date dataOfBirth;
 
-    @ElementCollection
-    @CollectionTable(name = "userRoles")
-    private List<UserRole> userRoles = new ArrayList<UserRole>();
+//    @ElementCollection
+//    @CollectionTable(name = "userRoles")
+//    private List<UserRole> userRoles = new ArrayList<UserRole>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Address residenceAddress;
 
 

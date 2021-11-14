@@ -1,7 +1,5 @@
 package com.example.airlinereservationsystem.domain;
 
-public enum UserRole {
-    ROLE_ADMIN, ROLE_USER, ROLE_AGENT
 import com.example.airlinereservationsystem.util.constant.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Data;
