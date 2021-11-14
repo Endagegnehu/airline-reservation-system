@@ -1,6 +1,7 @@
 package com.example.airlinereservationsystem.util;
 
 import com.example.airlinereservationsystem.domain.User;
+import com.example.airlinereservationsystem.domain.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,18 +14,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class UserDetailsImpl implements UserDetails {
-    final Logger logger = LoggerFactory.getLogger(UserDetailsImpl.class);
+public class UserSecurityDetailsImpl implements UserDetails {
+    final Logger logger = LoggerFactory.getLogger(UserSecurityDetailsImpl.class);
     private String username;
     private String password;
-    private List<GrantedAuthority> authorities;
+    private List<UserRole> authorities;
 
-    public UserDetailsImpl(User user) {
+    public UserSecurityDetailsImpl(User user) {
         username = user.getUsername();
         password = user.getPassword();
-//        authorities = Arrays.stream(user.getRole().split(",")).
-//                map(SimpleGrantedAuthority::new)
-//                .collect(Collectors.toList());
+        authorities = user.getRole();
+//                Arrays.stream(user.getRole().split(",")).collect(Collectors.toList());
     }
 
     @Override

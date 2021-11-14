@@ -3,6 +3,7 @@ package com.example.airlinereservationsystem.domain;
 import com.example.airlinereservationsystem.util.constant.Roles;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,9 +13,14 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor
 @Data
-public class UserRole {
+public class UserRole implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     Roles roleName;
+
+    @Override
+    public String getAuthority() {
+        return roleName.toString();
+    }
 }
