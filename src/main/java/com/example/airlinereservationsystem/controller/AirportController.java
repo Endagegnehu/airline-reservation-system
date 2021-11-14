@@ -39,6 +39,7 @@ public class AirportController {
 
     @PostMapping
     public ResponseEntity<?> addAirport(@RequestBody AirportDto airportDto){
+        log.info("[INFO] AirPORT DTO {}", airportDto);
         Airport airport = modelMapper.map(airportDto, Airport.class);
         Optional<Address> addressOptional = Optional.ofNullable(addressService.getAddressById(airportDto.getAddress_id()));
         if (!addressOptional.isPresent()){

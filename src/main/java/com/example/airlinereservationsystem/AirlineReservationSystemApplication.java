@@ -28,7 +28,7 @@ public class AirlineReservationSystemApplication {
         return args->{
             Airport airport = new Airport();
             airport.setName("JFK NY Airport");
-            airport.setCode("KFK");
+            airport.setCode("JFK");
             //airport.setAddress(new Address(null,"street","city","state","010000"));
 
             Airline airline = new Airline();
