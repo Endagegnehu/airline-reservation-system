@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
-public class DummyDummyAirportServiceImpl implements DummyAirportService {
+public class DummyAirportServiceImpl implements DummyAirportService {
     @Autowired
     private DummyAirportRespository airportRespository;
 

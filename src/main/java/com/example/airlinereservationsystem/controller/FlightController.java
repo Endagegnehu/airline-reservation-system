@@ -49,7 +49,7 @@ public class FlightController {
             return new ResponseEntity<String>(HttpStatus.CREATED);
 //            return (ResponseEntity<String>) ResponseEntity.created();
         } else
-            return new ResponseEntity<String>("Null Entities", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
     }
 
 }
