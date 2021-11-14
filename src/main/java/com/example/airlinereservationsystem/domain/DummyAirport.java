@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class AirportDummy {
+public class DummyAirport {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
