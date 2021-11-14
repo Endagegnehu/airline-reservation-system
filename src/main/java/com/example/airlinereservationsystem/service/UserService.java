@@ -14,4 +14,3 @@ public interface UserService {
      Optional<User> findUserByUsername(String firstName);
      UserDetails getUserDetails(String firstName);
 }
-
