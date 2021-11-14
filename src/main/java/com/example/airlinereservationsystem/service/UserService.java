@@ -17,4 +17,5 @@ public interface UserService {
     UserDto addRole(RoleDto role);
 
     UserDto removeRole(RoleDto role);
+
 }

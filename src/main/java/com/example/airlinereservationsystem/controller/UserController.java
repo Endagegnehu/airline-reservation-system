@@ -1,5 +1,6 @@
 package com.example.airlinereservationsystem.controller;
 
+<<<<<<< HEAD
 
 import com.example.airlinereservationsystem.domain.User;
 import com.example.airlinereservationsystem.dto.RoleDto;
@@ -10,10 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.*;
+
 
 @RestController
 @RequestMapping
 public class UserController {
+    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -42,6 +46,5 @@ public class UserController {
 
     @DeleteMapping("/admin/remove-role")
     public void removeRole(@RequestBody RoleDto userRole) {
-        userService.removeRole(userRole);
-    }
+        userService.removeRole(userRole);}
 }
