@@ -3,10 +3,14 @@ package com.example.airlinereservationsystem.controller;
 import com.example.airlinereservationsystem.domain.DummyAirline;
 import com.example.airlinereservationsystem.domain.DummyAirport;
 import com.example.airlinereservationsystem.domain.Flight;
+import com.example.airlinereservationsystem.domain.User;
+import com.example.airlinereservationsystem.dto.FlightDto;
 import com.example.airlinereservationsystem.service.FlightServiceImpl;
 import com.example.airlinereservationsystem.service.interfaces.DummyAirlineService;
 import com.example.airlinereservationsystem.service.interfaces.DummyAirportService;
+import com.example.airlinereservationsystem.util.ResponseHandler;
 import org.hibernate.PersistentObjectException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +23,9 @@ public class FlightController {
 
     @Autowired
     FlightServiceImpl flightService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private DummyAirportService airportService;
@@ -37,19 +44,20 @@ public class FlightController {
     }
 
     @PostMapping(path = "/admin/flights", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> addFlight(@RequestBody Flight flight){
-        DummyAirline airlineDummy = airlineService.findById(flight.getDummyAirline().getId());
-        DummyAirport departureAirportDummy = airportService.findById(flight.getDepartureDummyAirport().getId());
-        DummyAirport arrivalAirportDummy = airportService.findById(flight.getArrivalDummyAirport().getId());
+    public ResponseEntity<Object> addFlight(@RequestBody FlightDto flightDto){
+        DummyAirline airlineDummy = airlineService.findById(flightDto.getDummyAirline().getId());
+        DummyAirport departureAirportDummy = airportService.findById(flightDto.getDepartureDummyAirport().getId());
+        DummyAirport arrivalAirportDummy = airportService.findById(flightDto.getArrivalDummyAirport().getId());
         if (airlineDummy != null && departureAirportDummy != null && arrivalAirportDummy != null ) {
+            Flight flight = modelMapper.map(flightDto, Flight.class);
             flight.setDummyAirline(airlineDummy);
             flight.setArrivalDummyAirport(arrivalAirportDummy);
             flight.setDepartureDummyAirport(departureAirportDummy);
             flightService.addFlight(flight);
-            return new ResponseEntity<String>(HttpStatus.CREATED);
-//            return (ResponseEntity<String>) ResponseEntity.created();
+            return  ResponseHandler.respond("Successfully added a flight!", HttpStatus.OK, flight);
         } else
-            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+            return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
+
     }
 
 }
