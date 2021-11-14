@@ -3,5 +3,5 @@ package com.example.airlinereservationsystem.service;
 import com.example.airlinereservationsystem.domain.Address;
 
 public interface AddressService {
-    Address getAddresById(String ID);
+    Address getAddressById(String ID);
 }
