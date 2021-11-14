@@ -40,6 +40,7 @@ public class AirportServiceImpl implements AirportService{
         optionalAirport.get().setAddress(airport.getAddress());
         optionalAirport.get().setCode(airport.getCode());
         optionalAirport.get().setName(airport.getName());
+        repository.flush();
     }
 
     @Override

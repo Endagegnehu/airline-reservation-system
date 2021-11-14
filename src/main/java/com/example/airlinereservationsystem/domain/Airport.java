@@ -16,6 +16,6 @@ public class Airport {
     private  Long id;
     private String code;
     private String name;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Address address;
 }
