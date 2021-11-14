@@ -3,7 +3,6 @@ package com.example.airlinereservationsystem.controller;
 
 import com.example.airlinereservationsystem.service.TicketsService;
 import com.example.airlinereservationsystem.service.TicketsServiceImplementation;
-import com.example.airlinereservationsystem.service.UserService;
 import com.example.airlinereservationsystem.service.UserServiceImplementation;
 import com.example.airlinereservationsystem.util.JwtUtil;
 import com.example.airlinereservationsystem.util.constant.Roles;
