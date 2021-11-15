@@ -14,6 +14,5 @@ import java.util.List;
 @Transactional(propagation = Propagation.REQUIRED)
 public interface FlightRespository extends JpaRepository<Flight, Long> {
     @Query("Select f FROM Flight f WHERE f.departureDummyAirport.name = :departure and f.arrivalDummyAirport.name = :destination")
-    public List<Flight> findSomeByAirports(@Param("departure") String departure, @Param("destination") String destination);
-
+        public List<Flight> findSomeByAirports(@Param("departure") String departure, @Param("destination") String destination);
 }

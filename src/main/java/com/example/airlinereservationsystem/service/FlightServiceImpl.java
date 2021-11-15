@@ -4,8 +4,6 @@ import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.repository.FlightRespository;
 import com.example.airlinereservationsystem.service.interfaces.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

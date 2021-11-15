@@ -31,7 +31,7 @@ public class FlightController {
     @Autowired
     private DummyAirlineService airlineService;
 
-    @GetMapping("/flights")
+    @GetMapping(value = "/flights")
     public List<Flight> findAll(){
         return flightService.findAll();
     }
@@ -41,7 +41,7 @@ public class FlightController {
         return flightService.findById(id);
     }
 
-    @GetMapping("/flights/filtered/")
+    @GetMapping(value = "/flights", params = {"dep", "dest"})
     @ResponseBody
     public List<Flight> findSome(@RequestParam(name = "dep", required = false) String departureAirport,
                                  @RequestParam(name = "dest", required = false) String destinationAirport){
