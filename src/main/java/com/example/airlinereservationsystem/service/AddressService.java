@@ -2,8 +2,13 @@ package com.example.airlinereservationsystem.service;
 
 import com.example.airlinereservationsystem.domain.Address;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-public interface AddressService extends JpaRepository<Address,Long> {
-    Address getAddresById(String ID);
+public interface AddressService {
+    public List<Address> getAllAddresses();
+    public Address getAddressById(long id);
+    public void deleteAddress(long id);
+    public Address updateAddress(Address address, long id);
+    public void addAddress(Address address);
+
 }
