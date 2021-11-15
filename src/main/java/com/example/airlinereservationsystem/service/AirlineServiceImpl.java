@@ -26,6 +26,11 @@ public class AirlineServiceImpl implements AirlineService{
     }
 
     @Override
+    public Airline getAirlineById(Long Id) {
+        return repository.getById(Id);
+    }
+
+    @Override
     public void addAirline(Airline airline) {
         repository.save(airline);
     }

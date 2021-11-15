@@ -30,4 +30,9 @@ public class FlightServiceImpl implements FlightService {
     public void addFlight(Flight flight) {
         flightRespository.save(flight);
     }
+
+    @Override
+    public List<Flight> getFlightByAirlineCode(String code) {
+        return flightRespository.getFlightByAirlineCode(code);
+    }
 }

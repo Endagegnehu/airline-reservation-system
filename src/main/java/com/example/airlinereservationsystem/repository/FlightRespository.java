@@ -2,11 +2,17 @@ package com.example.airlinereservationsystem.repository;
 
 import com.example.airlinereservationsystem.domain.Flight;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @Transactional(propagation = Propagation.REQUIRED)
 public interface FlightRespository extends JpaRepository<Flight, Long> {
+
+    @Query("select f from Flight f join f.departureAirport a where a.code = ?1")
+    List<Flight> getFlightByAirlineCode(String code);
 }

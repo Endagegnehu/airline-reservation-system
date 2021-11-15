@@ -27,6 +27,11 @@ public class AirportServiceImpl implements AirportService{
     }
 
     @Override
+    public Airport getById(Long id) {
+        return repository.getById(id);
+    }
+
+    @Override
     public void addAirport(Airport airport) {
         repository.save(airport);
     }

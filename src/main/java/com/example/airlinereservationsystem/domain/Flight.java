@@ -25,21 +25,21 @@ public class Flight {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "airline_id")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = DummyAirline.class)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Airline.class)
     @JsonIdentityReference(alwaysAsId = true)
-    private DummyAirline dummyAirline;
+    private Airline airline;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "departure_airport_id")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = DummyAirport.class)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Airport.class)
     @JsonIdentityReference(alwaysAsId = true)
-    private DummyAirport departureDummyAirport;
+    private Airport departureAirport;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "arrival_airport_id")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = DummyAirport.class)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Airport.class)
     @JsonIdentityReference(alwaysAsId = true)
-    private DummyAirport arrivalDummyAirport;
+    private Airport arrivalAirport;
 
     @Column(name = "departure_time")
     private LocalTime departureTime;
@@ -47,12 +47,12 @@ public class Flight {
     @Column(name = "arrival_time")
     private LocalTime arrivalTime;
 
-    public Flight(Long number, Integer numberOfSeats, DummyAirline dummyAirline, DummyAirport departureDummyAirport, DummyAirport arrivalDummyAirport, LocalTime departureTime, LocalTime arrivalTime) {
+    public Flight(Long number, Integer numberOfSeats, Airline airline, Airport departureAirport, Airport arrivalAirport, LocalTime departureTime, LocalTime arrivalTime) {
         this.number = number;
         this.numberOfSeats = numberOfSeats;
-        this.dummyAirline = dummyAirline;
-        this.departureDummyAirport = departureDummyAirport;
-        this.arrivalDummyAirport = arrivalDummyAirport;
+        this.airline = airline;
+        this.departureAirport = departureAirport;
+        this.arrivalAirport = arrivalAirport;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
     }

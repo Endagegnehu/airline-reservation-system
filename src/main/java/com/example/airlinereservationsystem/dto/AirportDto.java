@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 public class AirportDto {
     private String code;
     private String name;
-    private String address_id;
+    private long address_id;
 }
