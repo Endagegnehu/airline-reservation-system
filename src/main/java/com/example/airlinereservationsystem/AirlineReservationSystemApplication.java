@@ -22,5 +22,5 @@ public class AirlineReservationSystemApplication {
     public ModelMapper modelMapper(){
         return new ModelMapper();
     }
-    
+
 }
