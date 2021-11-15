@@ -52,13 +52,11 @@ public class AirportController {
         return ResponseEntity.ok().build();
     }
     @PatchMapping("/admin/airports/{code}")
-    public ResponseEntity<?> updateAirport(@RequestBody AirportDto airportDto){
-        Airport airport = modelMapper.map(airportDto, Airport.class);
-        Optional<Address> addressOptional = Optional.ofNullable(addressService.getAddress(airportDto.getAddress_id()));
-        if (!addressOptional.isPresent()){
-            throw new IllegalStateException("Incorrect address id: " + airportDto.getAddress_id());
-        }
-        airport.setAddress(addressOptional.get());
+    public ResponseEntity<?> updateAirport(@RequestBody AirportDto airportDto, @PathVariable String code){
+        Airport airport = airportService.getAirportByCode(code);
+        airport.setCode(airportDto.getCode());
+        airport.setName(airportDto.getName());
+        airport.setAddress(addressService.getAddress(airportDto.getAddress_id()));
         airportService.updateAirport(airport);
         return ResponseEntity.ok().build();
     }
