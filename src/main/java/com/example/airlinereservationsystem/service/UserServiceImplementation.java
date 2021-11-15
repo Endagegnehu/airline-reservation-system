@@ -1,18 +1,18 @@
 package com.example.airlinereservationsystem.service;
 
 import com.example.airlinereservationsystem.domain.User;
-import com.example.airlinereservationsystem.domain.UserRole;
 import com.example.airlinereservationsystem.dto.RoleDto;
 import com.example.airlinereservationsystem.dto.UserLoginDto;
 import com.example.airlinereservationsystem.dto.UserDto;
 import com.example.airlinereservationsystem.repository.UserRepository;
 import com.example.airlinereservationsystem.util.UserSecurityDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,8 +34,15 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public void signup(User user) {
-        userRepository.save(user);
+    public ResponseEntity<?> signup(User user) {
+        User currentUser = userRepository.findUserByEmail(user.getEmail());
+        if(currentUser != null){
+            if(currentUser.getEmail().equals(user.getEmail()) || currentUser.getUsername().equals(user.getUsername())){
+                return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
+            }
+        }
+         userRepository.save(user);
+        return new ResponseEntity<>("User created successfully", HttpStatus.OK);
     }
     @Override
     public Optional<User> findUserByUsername(String username) {

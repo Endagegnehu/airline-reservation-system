@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -49,12 +50,15 @@ public class UserController {
         userRoles.add(userRole);
         User user = modelMapper.map(userDto,User.class);
         user.setRole(userRoles);
-        userService.signup(user);
-        final Optional<User> currentUser = userService.findUserByUsername(user.getUsername());
-        final UserDetails userDetails = userService.getUserDetails(user.getUsername());
-        final String jwt  = jwtUtil.generateToken(userDetails);
-        logger.info("JWT: " + jwt);
-        return ResponseEntity.ok(new UserRegistrationResponse(jwt));
+        ResponseEntity<?> responseEntity = userService.signup(user);
+        if(responseEntity.getStatusCode() == HttpStatus.CONFLICT){
+            return ResponseEntity.ok(new HashMap<>(){{put( responseEntity.getStatusCode(),responseEntity.getBody());}} );
+        }else{
+            final UserDetails userDetails = userService.getUserDetails(user.getUsername());
+            final Map<String, Object> jwt  = jwtUtil.generateToken(userDetails);
+            logger.info("JWT: " + jwt);
+            return ResponseEntity.ok(new UserRegistrationResponse(jwt));
+        }
     }
 
     @PostMapping("/login")
