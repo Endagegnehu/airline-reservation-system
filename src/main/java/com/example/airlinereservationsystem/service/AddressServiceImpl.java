@@ -2,6 +2,7 @@ package com.example.airlinereservationsystem.service;
 
 import com.example.airlinereservationsystem.domain.Address;
 import com.example.airlinereservationsystem.repository.AddressRepository;
+import com.example.airlinereservationsystem.service.interfaces.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
