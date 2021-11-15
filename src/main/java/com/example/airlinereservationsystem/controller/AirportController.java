@@ -40,7 +40,7 @@ public class AirportController {
     @PostMapping
     public ResponseEntity<?> addAirport(@RequestBody AirportDto airportDto){
         Airport airport = modelMapper.map(airportDto, Airport.class);
-        Optional<Address> addressOptional = Optional.ofNullable(addressService.getAddresById(airportDto.getAddress_id()));
+        Optional<Address> addressOptional = Optional.ofNullable(addressService.getAddressById(airportDto.getAddress_id()));
         if (!addressOptional.isPresent()){
             throw new IllegalStateException("Incorrect address id: " + airportDto.getAddress_id());
         }
@@ -51,7 +51,7 @@ public class AirportController {
     @PatchMapping("/{code}")
     public ResponseEntity<?> updateAirport(@RequestBody AirportDto airportDto){
         Airport airport = modelMapper.map(airportDto, Airport.class);
-        Optional<Address> addressOptional = Optional.ofNullable(addressService.getAddresById(airportDto.getAddress_id()));
+        Optional<Address> addressOptional = Optional.ofNullable(addressService.getAddressById(airportDto.getAddress_id()));
         if (!addressOptional.isPresent()){
             throw new IllegalStateException("Incorrect address id: " + airportDto.getAddress_id());
         }

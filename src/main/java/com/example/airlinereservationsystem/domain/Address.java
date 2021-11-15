@@ -8,16 +8,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import javax.persistence.Table;
+
 @Entity
+@Table(name = "address")
+
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Address {
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
     private String street;
     private String city;
-    private String state;
     private String zipCode;
+    private String state;
+
 }
