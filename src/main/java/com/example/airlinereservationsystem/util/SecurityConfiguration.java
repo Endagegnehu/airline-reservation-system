@@ -44,8 +44,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/flights").permitAll()
                 .antMatchers("/flights/{id}").permitAll()
+                .antMatchers("/flights/{id}/instances").permitAll()
+                .antMatchers("/flights/instances").permitAll()
                 .antMatchers("/admin/flights").permitAll()
                 .antMatchers("/user").hasAnyAuthority(Roles.ROLE_USER.toString())
+
+                .antMatchers("/admin/add-role").hasAnyAuthority(Roles.ROLE_USER.toString())
                 .antMatchers("/users").permitAll()
 //                .antMatchers("/airports", "/airlines").hasAnyAuthority(Roles.ROLE_USER.toString()).
                 .antMatchers("/airports", "/airlines").permitAll()
@@ -55,7 +59,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/airlines/{airlineCode}").permitAll()
                 .antMatchers("/admin/airports/{airportCode}").permitAll()
                 .antMatchers("/airports/{airportCode}/*").permitAll()
-                .antMatchers("/airports/*", "/airlines/*").permitAll().
+                .antMatchers("/airports/*", "/airlines/*").permitAll()
+                .antMatchers("/user").hasAnyAuthority(Roles.ROLE_USER.toString())
+                .antMatchers("/reservations").permitAll()
+                .antMatchers("/reservations/confirm").permitAll()
+                .antMatchers("/airports", "/airlines").hasAnyAuthority(Roles.ROLE_USER.toString()).
+                antMatchers("/airports", "/airlines").permitAll().
+
                 anyRequest().authenticated().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

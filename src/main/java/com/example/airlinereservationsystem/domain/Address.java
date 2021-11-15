@@ -1,6 +1,5 @@
 package com.example.airlinereservationsystem.domain;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,10 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "address")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Address {
-
     @Id
     @GeneratedValue
     private long id;
@@ -24,6 +20,5 @@ public class Address {
     private String city;
     private String zipCode;
     private String state;
-
 
 }

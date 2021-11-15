@@ -47,10 +47,10 @@ public class Flight {
     @Column(name = "arrival_time")
     private LocalTime arrivalTime;
 
-    public Flight(Long number, Integer numberOfSeats, Airline airline, Airport departureAirport, Airport arrivalAirport, LocalTime departureTime, LocalTime arrivalTime) {
+    public Flight(Long number, Integer numberOfSeats, Airline dummyAirline, Airport departureAirport, Airport arrivalAirport, LocalTime departureTime, LocalTime arrivalTime) {
         this.number = number;
         this.numberOfSeats = numberOfSeats;
-        this.airline = airline;
+        this.airline = dummyAirline;
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
         this.departureTime = departureTime;

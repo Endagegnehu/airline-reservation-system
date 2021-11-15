@@ -18,6 +18,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
                             @Param("password") String password);
 
     Optional<User> findByUsername(String username);
+    User findUserByEmail(String email);
+    Optional<User> findByID(long id);
+
 }
 
 //import java.util.Optional;

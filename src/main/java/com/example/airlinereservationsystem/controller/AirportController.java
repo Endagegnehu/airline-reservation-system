@@ -5,10 +5,9 @@ import com.example.airlinereservationsystem.domain.Airline;
 import com.example.airlinereservationsystem.domain.Airport;
 import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.dto.AirportDto;
-import com.example.airlinereservationsystem.service.AddressService;
-import com.example.airlinereservationsystem.service.AirlineService;
-import com.example.airlinereservationsystem.service.AirportService;
-import com.example.airlinereservationsystem.service.interfaces.FlightService;
+import com.example.airlinereservationsystem.service.interfaces.AddressService;
+import com.example.airlinereservationsystem.service.interfaces.AirlineService;
+import com.example.airlinereservationsystem.service.interfaces.AirportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -43,7 +42,7 @@ public class AirportController {
     public ResponseEntity<?> addAirport(@RequestBody AirportDto airportDto){
         log.info("[INFO] AirPORT DTO {}", airportDto);
         Airport airport = modelMapper.map(airportDto, Airport.class);
-        Optional<Address> addressOptional = Optional.ofNullable(addressService.getAddress(airportDto.getAddress_id()));
+        Optional<Address> addressOptional = Optional.ofNullable(addressService.getAddressById(airportDto.getAddress_id()));
         if (!addressOptional.isPresent()){
             throw new IllegalStateException("Incorrect address id: " + airportDto.getAddress_id());
         }
@@ -57,6 +56,14 @@ public class AirportController {
         airport.setCode(airportDto.getCode());
         airport.setName(airportDto.getName());
         airport.setAddress(addressService.getAddress(airportDto.getAddress_id()));
+    @PatchMapping("/{code}")
+    public ResponseEntity<?> updateAirport(@RequestBody AirportDto airportDto){
+        Airport airport = modelMapper.map(airportDto, Airport.class);
+        Optional<Address> addressOptional = Optional.ofNullable(addressService.getAddressById(airportDto.getAddress_id()));
+        if (!addressOptional.isPresent()){
+            throw new IllegalStateException("Incorrect address id: " + airportDto.getAddress_id());
+        }
+        airport.setAddress(addressOptional.get());
         airportService.updateAirport(airport);
         return ResponseEntity.ok().build();
     }

@@ -2,7 +2,7 @@ package com.example.airlinereservationsystem.controller;
 
 
 import com.example.airlinereservationsystem.domain.Address;
-import com.example.airlinereservationsystem.service.AddressService;
+import com.example.airlinereservationsystem.service.interfaces.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +19,7 @@ public class AddressController {
 
     @GetMapping("/addresses/{id}")
     Address getAddress(@PathVariable long id){
-        return addressService.getAddress(id);
+        return addressService.getAddressById(id);
     }
 
 
