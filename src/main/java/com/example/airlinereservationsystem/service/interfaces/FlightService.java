@@ -8,4 +8,5 @@ public interface FlightService {
     public List<Flight> findAll();
     public Flight findById(Long id);
     public void addFlight(Flight flight);
+    public List<Flight> findSomeByAirports(String departure, String destination);
 }

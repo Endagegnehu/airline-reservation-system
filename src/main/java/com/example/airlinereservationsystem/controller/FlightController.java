@@ -3,13 +3,11 @@ package com.example.airlinereservationsystem.controller;
 import com.example.airlinereservationsystem.domain.DummyAirline;
 import com.example.airlinereservationsystem.domain.DummyAirport;
 import com.example.airlinereservationsystem.domain.Flight;
-import com.example.airlinereservationsystem.domain.User;
 import com.example.airlinereservationsystem.dto.FlightDto;
 import com.example.airlinereservationsystem.service.FlightServiceImpl;
 import com.example.airlinereservationsystem.service.interfaces.DummyAirlineService;
 import com.example.airlinereservationsystem.service.interfaces.DummyAirportService;
 import com.example.airlinereservationsystem.util.ResponseHandler;
-import org.hibernate.PersistentObjectException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +39,14 @@ public class FlightController {
     @GetMapping("/flights/{id}")
     public Flight findById(@PathVariable Long id) {
         return flightService.findById(id);
+    }
+
+    @GetMapping("/flights/filtered/")
+    @ResponseBody
+    public List<Flight> findSome(@RequestParam(name = "dep", required = false) String departureAirport,
+                                 @RequestParam(name = "dest", required = false) String destinationAirport){
+
+        return flightService.findSomeByAirports(departureAirport, destinationAirport);
     }
 
     @PostMapping(path = "/admin/flights", consumes = "application/json", produces = "application/json")

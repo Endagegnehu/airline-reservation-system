@@ -19,4 +19,8 @@ public class DummyAirport {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+
+    public DummyAirport(String name) {
+        this.name = name;
+    }
 }

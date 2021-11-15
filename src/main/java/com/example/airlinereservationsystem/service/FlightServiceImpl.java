@@ -4,6 +4,8 @@ import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.repository.FlightRespository;
 import com.example.airlinereservationsystem.service.interfaces.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,5 +31,9 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public void addFlight(Flight flight) {
         flightRespository.save(flight);
+    }
+
+    public List<Flight> findSomeByAirports(String departure, String destination) {
+        return flightRespository.findSomeByAirports(departure, destination);
     }
 }
