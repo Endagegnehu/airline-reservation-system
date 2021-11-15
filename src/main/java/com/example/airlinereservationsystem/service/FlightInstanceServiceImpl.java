@@ -11,9 +11,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
-@Service
-@Transactional(propagation = Propagation.REQUIRED)
+
+
 public class FlightInstanceServiceImpl implements FlightInstanceService {
 
     @Autowired
@@ -33,4 +34,10 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
     public Page<FlightInstance> findAllBetweenTwoDestinationsOnADate(String departureAirport, String arrivalAirport, LocalDate date, Pageable pageable) {
         return instanceRepository.findAllBetweenTwoDestinationsOnADate(departureAirport, arrivalAirport, date, pageable);
     }
+
+    @Override
+    public Optional<FlightInstance> findById(long id) {
+        return instanceRepository.findById(id);
+    }
+
 }

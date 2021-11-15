@@ -21,4 +21,7 @@ public class Reservations {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User user;
+    @ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<FlightInstance> flightInstances = new ArrayList<>();
+
 }

@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.lang.reflect.Array;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservationsDto {
-    //private String flightInstanceId;
     private long userId;
+    private long[] flightInstanceIds;
 
 }
