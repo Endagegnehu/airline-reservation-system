@@ -97,4 +97,14 @@ public class UserServiceImplementation implements UserService {
         user.orElseThrow(()-> new UsernameNotFoundException("No user found: "+ username));
         return user.map(UserSecurityDetailsImpl::new).get();
     }
+
+    @Override
+    public void addUser(User user) {
+
+    }
+
+    @Override
+	public Optional<User> findUserByID(long id) {
+        return userRepository.findByID(id);
+	}
 }
