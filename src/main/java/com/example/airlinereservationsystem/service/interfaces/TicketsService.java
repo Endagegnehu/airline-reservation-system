@@ -1,4 +1,4 @@
-package com.example.airlinereservationsystem.service;
+package com.example.airlinereservationsystem.service.interfaces;
 
 import javax.transaction.Transactional;
 

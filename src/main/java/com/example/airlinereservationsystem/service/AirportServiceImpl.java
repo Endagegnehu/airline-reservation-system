@@ -2,6 +2,7 @@ package com.example.airlinereservationsystem.service;
 
 import com.example.airlinereservationsystem.domain.Airport;
 import com.example.airlinereservationsystem.repository.AirportRepository;
+import com.example.airlinereservationsystem.service.interfaces.AirportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 
 @Service @RequiredArgsConstructor @Transactional @Slf4j
-public class AirportServiceImpl implements AirportService{
+public class AirportServiceImpl implements AirportService {
 
     private final AirportRepository repository;
 
@@ -24,6 +25,11 @@ public class AirportServiceImpl implements AirportService{
     @Override
     public Airport getAirportByCode(String code) {
         return repository.findByCode(code);
+    }
+
+    @Override
+    public Airport getAirportById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
     @Override

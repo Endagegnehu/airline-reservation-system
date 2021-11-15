@@ -4,28 +4,21 @@ package com.example.airlinereservationsystem.controller;
 import com.example.airlinereservationsystem.domain.Reservations;
 import com.example.airlinereservationsystem.domain.Tickets;
 import com.example.airlinereservationsystem.domain.User;
-import com.example.airlinereservationsystem.domain.UserRole;
 import com.example.airlinereservationsystem.dto.ConfirmationDto;
 import com.example.airlinereservationsystem.dto.ReservationsDto;
-import com.example.airlinereservationsystem.dto.UserDto;
-import com.example.airlinereservationsystem.dto.UserRegistrationResponse;
-import com.example.airlinereservationsystem.service.ReservationsService;
+import com.example.airlinereservationsystem.service.interfaces.ReservationsService;
 import com.example.airlinereservationsystem.service.ReservationsServiceImplementation;
-import com.example.airlinereservationsystem.service.TicketsService;
-import com.example.airlinereservationsystem.service.UserService;
+import com.example.airlinereservationsystem.service.interfaces.TicketsService;
+import com.example.airlinereservationsystem.service.interfaces.UserService;
 import com.example.airlinereservationsystem.util.JwtUtil;
-import com.example.airlinereservationsystem.util.UserSecurityDetailsImpl;
-import com.example.airlinereservationsystem.util.constant.Roles;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
 import java.util.*;
 
 @RestController
