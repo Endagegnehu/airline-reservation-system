@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -18,5 +19,8 @@ import java.util.List;
 public interface FlightInstanceRepository extends JpaRepository<FlightInstance, Long> {
     @Query("SELECT fi FROM FlightInstance fi WHERE fi.flight.id = :id")
     public Page<FlightInstance> findAllPerFlight(@Param("id") Long id, Pageable pageable);
+
+    @Query("SELECT fi FROM FlightInstance fi JOIN fi.flight f WHERE f.departureDummyAirport.name = :departureAirport and f.arrivalDummyAirport.name = :arrivalAirport and fi.departureDate= :date")
+    public Page<FlightInstance> findAllBetweenTwoDestinationsOnADate(@Param("departureAirport")String departureAirport, @Param("arrivalAirport")String arrivalAirport,  @Param("date")LocalDate date, Pageable pageable);
 
 }

@@ -1,5 +1,6 @@
 package com.example.airlinereservationsystem.service;
 
+import com.example.airlinereservationsystem.domain.DummyAirport;
 import com.example.airlinereservationsystem.domain.FlightInstance;
 import com.example.airlinereservationsystem.repository.FlightInstanceRepository;
 import com.example.airlinereservationsystem.service.interfaces.FlightInstanceService;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
@@ -25,5 +28,10 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
     @Override
     public Page<FlightInstance> findAllPerFlight(Long id, Pageable pageable) {
         return instanceRepository.findAllPerFlight(id, pageable);
+    }
+
+    @Override
+    public Page<FlightInstance> findAllBetweenTwoDestinationsOnADate(String departureAirport, String arrivalAirport, LocalDate date, Pageable pageable) {
+        return instanceRepository.findAllBetweenTwoDestinationsOnADate(departureAirport, arrivalAirport, date, pageable);
     }
 }

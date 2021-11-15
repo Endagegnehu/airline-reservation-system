@@ -51,27 +51,20 @@ public class FlightController {
 
     @GetMapping(value = "/flights", params = {"dep", "dest"})
     @ResponseBody
-    public List<Flight> findSome(@RequestParam(name = "dep", required = false) String departureAirport,
+    public List<Flight> findSomeByAirports(@RequestParam(name = "dep", required = false) String departureAirport,
                                  @RequestParam(name = "dest", required = false) String destinationAirport){
 
         return flightService.findSomeByAirports(departureAirport, destinationAirport);
     }
 
     @PostMapping(path = "/admin/flights", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> addFlight(@RequestBody FlightDto flightDto){
-        DummyAirline airlineDummy = airlineService.findById(flightDto.getDummyAirline().getId());
-        DummyAirport departureAirportDummy = airportService.findById(flightDto.getDepartureDummyAirport().getId());
-        DummyAirport arrivalAirportDummy = airportService.findById(flightDto.getArrivalDummyAirport().getId());
-        if (airlineDummy != null && departureAirportDummy != null && arrivalAirportDummy != null ) {
-            Flight flight = modelMapper.map(flightDto, Flight.class);
-            flight.setDummyAirline(airlineDummy);
-            flight.setArrivalDummyAirport(arrivalAirportDummy);
-            flight.setDepartureDummyAirport(departureAirportDummy);
-            flightService.addFlight(flight);
+    public ResponseEntity<?> addFlight(@RequestBody Flight flightDto){
+        Flight flight = modelMapper.map(flightDto, Flight.class);
+        if (flightService.addFlight(modelMapper.map(flightDto, Flight.class)) != null){
             return  ResponseHandler.respond("Successfully added a flight!", HttpStatus.OK, flight);
-        } else
+        } else {
             return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
+        }
     }
-
 }
 

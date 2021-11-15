@@ -11,6 +11,6 @@ public interface FlightService {
 
     public Page<Flight> findAll(Pageable pageable);
     public Flight findById(Long id);
-    public void addFlight(Flight flight);
+    public Flight addFlight(Flight flight);
     public List<Flight> findSomeByAirports(String departure, String destination);
 }
