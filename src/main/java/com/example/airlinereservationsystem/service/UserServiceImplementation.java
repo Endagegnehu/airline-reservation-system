@@ -61,8 +61,6 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDto addRole(RoleDto role) {
-        System.out.println("role: " +  role.getRole());
-        System.out.println("role: " +  role.getUserName());
         User user = userRepository.findByUsername(role.getUserName()).get();
         user.getRole().add(role.getRole());
         userRepository.save(user);
@@ -71,7 +69,6 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDto removeRole(RoleDto role) {
-        System.out.println("Inside remove role. ");
 
         User user = userRepository.findByUsername(role.getUserName()).get();
 

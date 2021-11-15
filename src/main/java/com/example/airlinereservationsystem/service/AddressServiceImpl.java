@@ -29,11 +29,6 @@ public class AddressServiceImpl implements AddressService {
         addressRepository.deleteById(id);
     }
 
-    private String street;
-    private String city;
-    private String zipCode;
-    private String state;
-
     @Override
     public Address updateAddress(Address updateAddress, long id) {
         Address address = addressRepository.findById(id).orElse(null);
