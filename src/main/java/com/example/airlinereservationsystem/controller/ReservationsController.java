@@ -11,6 +11,7 @@ import com.example.airlinereservationsystem.service.ReservationsService;
 import com.example.airlinereservationsystem.service.ReservationsServiceImplementation;
 import com.example.airlinereservationsystem.service.UserService;
 import com.example.airlinereservationsystem.util.JwtUtil;
+import com.example.airlinereservationsystem.util.UserSecurityDetailsImpl;
 import com.example.airlinereservationsystem.util.constant.Roles;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -40,13 +42,12 @@ public class ReservationsController {
     ReservationsServiceImplementation reservationsServiceImpl;
     
     @PostMapping("/reservations")
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public  ResponseEntity addReservation(@RequestBody ReservationsDto reservationsDto){
+    public  ResponseEntity<?> addReservation(@RequestBody ReservationsDto reservationsDto){
+        Reservations reservations = new Reservations();
         final Optional<User> user = userService.findUserByID(reservationsDto.getUserId());
-        Reservations reservations = modelMapper.map(user,Reservations.class);
-
+        user.orElseThrow(()-> new UsernameNotFoundException("No user found: "));
+        reservations.setUser(user.get());
         reservationsService.addReservation(reservations);
-        return ResponseEntity.ok().build(); 
-
+        return ResponseEntity.ok().build();
     }
 }

@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReservationsDto {
     //private String flightInstanceId;
-    private String userId;
+    private long userId;
 
 }

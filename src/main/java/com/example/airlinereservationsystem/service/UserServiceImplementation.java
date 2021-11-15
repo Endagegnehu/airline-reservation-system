@@ -33,7 +33,7 @@ public class UserServiceImplementation implements UserService {
     }
 
 	@Override
-	public Optional<User> findUserByID(String id) {
+	public Optional<User> findUserByID(long id) {
         return userRepository.findByID(id);
 	}
 }
