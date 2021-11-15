@@ -75,6 +75,7 @@ public class UserController {
 
     @DeleteMapping("/admin/remove-role")
     public ResponseEntity<?> removeRole(@RequestBody RoleDto userRole) {
+        System.out.println("inside removeRole controller. ");
         userService.removeRole(userRole);
         return ResponseEntity.ok().build();
     }

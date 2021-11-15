@@ -1,6 +1,7 @@
 package com.example.airlinereservationsystem.service;
 
 import com.example.airlinereservationsystem.domain.User;
+import com.example.airlinereservationsystem.domain.UserRole;
 import com.example.airlinereservationsystem.dto.RoleDto;
 import com.example.airlinereservationsystem.dto.UserLoginDto;
 import com.example.airlinereservationsystem.dto.UserDto;
@@ -60,6 +61,8 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDto addRole(RoleDto role) {
+        System.out.println("role: " +  role.getRole());
+        System.out.println("role: " +  role.getUserName());
         User user = userRepository.findByUsername(role.getUserName()).get();
         user.getRole().add(role.getRole());
         userRepository.save(user);
@@ -68,8 +71,14 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDto removeRole(RoleDto role) {
+        System.out.println("Inside remove role. ");
+
         User user = userRepository.findByUsername(role.getUserName()).get();
-        user.getRole().remove(role.getRole());
+
+        UserRole userRole = user.getRole()
+                .stream().filter(r-> r.getRoleName()
+                        .equals(role.getRole().getRoleName())).collect(Collectors.toList()).get(0);
+        user.getRole().remove(userRole);
         userRepository.save(user);
         return convertUserToUserDto(user);
     }
