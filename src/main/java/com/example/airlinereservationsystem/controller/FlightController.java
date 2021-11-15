@@ -10,6 +10,8 @@ import com.example.airlinereservationsystem.service.interfaces.DummyAirportServi
 import com.example.airlinereservationsystem.util.ResponseHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +38,12 @@ public class FlightController {
         return flightService.findAll();
     }
 
+
+    @GetMapping(value = "/flights", params = "paged=true")
+    public Page<Flight> findAll(Pageable pageable){
+        return flightService.findAll(pageable);
+    }
+
     @GetMapping("/flights/{id}")
     public Flight findById(@PathVariable Long id) {
         return flightService.findById(id);
@@ -50,7 +58,7 @@ public class FlightController {
     }
 
     @PostMapping(path = "/admin/flights", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Object> addFlight(@RequestBody FlightDto flightDto){
+    public ResponseEntity<?> addFlight(@RequestBody FlightDto flightDto){
         DummyAirline airlineDummy = airlineService.findById(flightDto.getDummyAirline().getId());
         DummyAirport departureAirportDummy = airportService.findById(flightDto.getDepartureDummyAirport().getId());
         DummyAirport arrivalAirportDummy = airportService.findById(flightDto.getArrivalDummyAirport().getId());
@@ -63,7 +71,6 @@ public class FlightController {
             return  ResponseHandler.respond("Successfully added a flight!", HttpStatus.OK, flight);
         } else
             return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
-
     }
 
 }

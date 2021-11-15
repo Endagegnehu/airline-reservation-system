@@ -4,6 +4,8 @@ import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.repository.FlightRespository;
 import com.example.airlinereservationsystem.service.interfaces.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,11 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public List<Flight> findAll() {
         return flightRespository.findAll();
+    }
+
+    @Override
+    public Page<Flight> findAll(Pageable pageable) {
+        return flightRespository.findAll(pageable);
     }
 
     @Override
