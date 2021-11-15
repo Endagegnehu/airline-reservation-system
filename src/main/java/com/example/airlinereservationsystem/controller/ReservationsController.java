@@ -11,6 +11,7 @@ import com.example.airlinereservationsystem.dto.UserDto;
 import com.example.airlinereservationsystem.dto.UserRegistrationResponse;
 import com.example.airlinereservationsystem.service.ReservationsService;
 import com.example.airlinereservationsystem.service.ReservationsServiceImplementation;
+import com.example.airlinereservationsystem.service.TicketsService;
 import com.example.airlinereservationsystem.service.UserService;
 import com.example.airlinereservationsystem.util.JwtUtil;
 import com.example.airlinereservationsystem.util.UserSecurityDetailsImpl;
@@ -35,6 +36,8 @@ public class ReservationsController {
     ReservationsService reservationsService;
     @Autowired
     UserService userService;
+    @Autowired
+    TicketsService ticketsService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -63,7 +66,7 @@ public class ReservationsController {
         ticket.setReservation(reservation.get());
         ticket.setNumber(genrateRandomBigInteger());
         ticket.setReservationCode(genrateRandomString());
-
+        ticketsService.addTicket(ticket);
         return ResponseEntity.ok().build();
 
     }
