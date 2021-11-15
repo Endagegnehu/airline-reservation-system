@@ -51,15 +51,6 @@ public class AirlineReservationSystemApplication {
             airline.setName("MyAirlines");
             airline.setCode("M01");
 
-            Flight flight = new Flight();
-            flight.setAirline(airline);
-            flight.setDepartureAirport(airport);
-            flight.setArrivalAirport(airport);
-            flight.setArrivalTime(LocalTime.now());
-            flight.setNumber(123L);
-            flight.setNumberOfSeats(3);
-
-            flightRespository.save(flight);
             airlineRepository.save(airline);
             airportRepository.save(airport);
 

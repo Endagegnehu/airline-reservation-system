@@ -50,7 +50,11 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address getAddress(Long ID) {
+    public void addAddress(Address address) {
+
+    }
+
+    public Address getAddressById (Long ID) {
         return addressRepository.findById(ID).get();
     }
 }

@@ -13,4 +13,5 @@ public interface FlightService {
     public Flight findById(Long id);
     public Flight addFlight(Flight flight);
     public List<Flight> findSomeByAirports(String departure, String destination);
+    List<Flight> getFlightByAirlineCode(String code);
 }

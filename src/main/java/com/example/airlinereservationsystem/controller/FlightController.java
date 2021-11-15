@@ -4,7 +4,6 @@ import com.example.airlinereservationsystem.domain.Airline;
 import com.example.airlinereservationsystem.domain.Airport;
 import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.dto.FlightDto;
-import com.example.airlinereservationsystem.service.AirlineService;
 import com.example.airlinereservationsystem.service.FlightServiceImpl;
 import com.example.airlinereservationsystem.service.interfaces.AirlineService;
 import com.example.airlinereservationsystem.service.interfaces.AirportService;

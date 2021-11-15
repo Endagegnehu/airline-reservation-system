@@ -8,6 +8,7 @@ import com.example.airlinereservationsystem.dto.AirportDto;
 import com.example.airlinereservationsystem.service.interfaces.AddressService;
 import com.example.airlinereservationsystem.service.interfaces.AirlineService;
 import com.example.airlinereservationsystem.service.interfaces.AirportService;
+import com.example.airlinereservationsystem.service.interfaces.FlightService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -55,15 +56,7 @@ public class AirportController {
         Airport airport = airportService.getAirportByCode(code);
         airport.setCode(airportDto.getCode());
         airport.setName(airportDto.getName());
-        airport.setAddress(addressService.getAddress(airportDto.getAddress_id()));
-    @PatchMapping("/{code}")
-    public ResponseEntity<?> updateAirport(@RequestBody AirportDto airportDto){
-        Airport airport = modelMapper.map(airportDto, Airport.class);
-        Optional<Address> addressOptional = Optional.ofNullable(addressService.getAddressById(airportDto.getAddress_id()));
-        if (!addressOptional.isPresent()){
-            throw new IllegalStateException("Incorrect address id: " + airportDto.getAddress_id());
-        }
-        airport.setAddress(addressOptional.get());
+        airport.setAddress(addressService.getAddressById(airportDto.getAddress_id()));
         airportService.updateAirport(airport);
         return ResponseEntity.ok().build();
     }
