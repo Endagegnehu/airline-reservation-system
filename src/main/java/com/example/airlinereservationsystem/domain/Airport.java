@@ -12,7 +12,9 @@ import javax.persistence.*;
 public class Airport {
     @Id @GeneratedValue
     private  Long id;
+    @Column(nullable = false, unique = true)
     private String code;
+    @Column(nullable = false)
     private String name;
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Address address;

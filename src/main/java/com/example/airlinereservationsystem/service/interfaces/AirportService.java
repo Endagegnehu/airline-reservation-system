@@ -8,7 +8,8 @@ import java.util.List;
 public interface AirportService {
     List<Airport> getAllAirports();
     Airport getAirportByCode(String code);
-    Airport getAirportById(Long id);
+    Airport getById(Long id);
+
     void addAirport(Airport airport);
     void updateAirport(Airport airport);
 
