@@ -4,9 +4,9 @@ spring:
   application:
     name: airlineReservationSystem
   datasource:
-    url: jdbc:mysql://localhost:3306/reservation
+    url: jdbc:mysql://localhost:3306/Airline_Reservation_System?createDatabaseIfNotExist=true
     username: root
-    password: superuser
+    password: 1144
     driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
@@ -14,7 +14,7 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
