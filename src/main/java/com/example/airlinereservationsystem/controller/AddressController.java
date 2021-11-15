@@ -23,7 +23,7 @@ public class AddressController {
 
     @GetMapping("/addresses/{id}")
     Address getAddress(@PathVariable long id){
-        return addressService.getAddress(id);
+        return addressService.getAddressById(id);
     }
 
     @DeleteMapping("/admin/addresses/{id}")

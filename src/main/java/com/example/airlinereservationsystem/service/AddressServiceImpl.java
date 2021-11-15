@@ -19,7 +19,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address getAddress(long id) {
+    public Address getAddressById(long id) {
         return addressRepository.findById(id).orElse(null);
     }
 
