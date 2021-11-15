@@ -26,7 +26,7 @@ public class Tickets {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long ID;
-    private BigInteger number;
+    private String number;
     private String reservationCode;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

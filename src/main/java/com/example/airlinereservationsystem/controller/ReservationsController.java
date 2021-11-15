@@ -64,32 +64,27 @@ public class ReservationsController {
         final Optional<Reservations> reservation = reservationsService.findReservationsByID(confirmationDto.getReservationId());
         reservation.orElseThrow(()-> new UsernameNotFoundException("No reservation found: "));
         ticket.setReservation(reservation.get());
-        ticket.setNumber(genrateRandomBigInteger());
-        ticket.setReservationCode(genrateRandomString());
+        ticket.setNumber(genrateRandomString("numeric"));
+        ticket.setReservationCode(genrateRandomString("alpha"));
         ticketsService.addTicket(ticket);
         return ResponseEntity.ok().build();
 
     }
-    
-    public static BigInteger genrateRandomBigInteger() {
-        BigInteger maxLimit = new BigInteger("99999999999999999999");
-        BigInteger minLimit = new BigInteger("10000000000000000000");
-        BigInteger bigInteger = maxLimit.subtract(minLimit);
-        Random randNum = new Random();
-        int len = maxLimit.bitLength();
-        BigInteger res = new BigInteger(len, randNum);
-        if (res.compareTo(minLimit) < 0)
-           res = res.add(minLimit);
-        if (res.compareTo(bigInteger) >= 0)
-           res = res.mod(bigInteger).add(minLimit);
-         return res;
-     }
-    
-    public static String genrateRandomString() {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
+    public static String genrateRandomString(String type) {
+        String SALTCHARS = "";
+        int size  = 0;
+        if(type == "alpha"){
+            SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            size = 6;
+        }
+        else{
+            SALTCHARS = "0123456789";
+            size = 20;
+        }
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
-        while (salt.length() < 7) { // length of the random string.
+        while (salt.length() < size) { // length of the random string.
             int index = (int) (rnd.nextFloat() * SALTCHARS.length());
             salt.append(SALTCHARS.charAt(index));
         }
