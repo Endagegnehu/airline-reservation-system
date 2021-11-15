@@ -22,23 +22,5 @@ public class AirlineReservationSystemApplication {
     public ModelMapper modelMapper(){
         return new ModelMapper();
     }
-
-//    @Bean
-//    CommandLineRunner run (AirlineRepository airlineRepository, AirportRepository airportRepository) {
-//        return args->{
-//            Airport airport = new Airport();
-//            airport.setName("JFK NY Airport");
-//            airport.setCode("KFK");
-//            //airport.setAddress(new Address(null,"street","city","state","010000"));
-//
-//            Airline airline = new Airline();
-//            airline.setHistory("bla bla bla history");
-//            airline.setName("MyAirlines");
-//            airline.setCode("M01");
-//
-//            airlineRepository.save(airline);
-//            airportRepository.save(airport);
-//
-//        };
-//    }
+    
 }
