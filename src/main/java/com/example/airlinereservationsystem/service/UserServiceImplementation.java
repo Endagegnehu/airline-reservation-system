@@ -5,6 +5,7 @@ import com.example.airlinereservationsystem.dto.RoleDto;
 import com.example.airlinereservationsystem.dto.UserLoginDto;
 import com.example.airlinereservationsystem.dto.UserDto;
 import com.example.airlinereservationsystem.repository.UserRepository;
+import com.example.airlinereservationsystem.service.interfaces.UserService;
 import com.example.airlinereservationsystem.util.UserSecurityDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

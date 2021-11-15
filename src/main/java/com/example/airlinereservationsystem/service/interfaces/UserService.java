@@ -1,4 +1,4 @@
-package com.example.airlinereservationsystem.service;
+package com.example.airlinereservationsystem.service.interfaces;
 
 import com.example.airlinereservationsystem.domain.User;
 import com.example.airlinereservationsystem.dto.RoleDto;

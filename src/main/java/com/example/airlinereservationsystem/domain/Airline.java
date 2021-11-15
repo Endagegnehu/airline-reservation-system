@@ -4,6 +4,7 @@ package com.example.airlinereservationsystem.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
@@ -26,4 +27,9 @@ public class Airline {
     private String name;
     @Column(table = "AIRLINE_HISTORY")
     private String history;
+
+    public Airline(String code, String name) {
+        this.code = code;
+        this.name = name;
+    }
 }

@@ -6,7 +6,7 @@ import com.example.airlinereservationsystem.dto.RoleDto;
 import com.example.airlinereservationsystem.dto.UserLoginDto;
 import com.example.airlinereservationsystem.dto.UserDto;
 import com.example.airlinereservationsystem.dto.UserRegistrationResponse;
-import com.example.airlinereservationsystem.service.UserService;
+import com.example.airlinereservationsystem.service.interfaces.UserService;
 import com.example.airlinereservationsystem.util.JwtUtil;
 import com.example.airlinereservationsystem.util.constant.Roles;
 import org.modelmapper.ModelMapper;

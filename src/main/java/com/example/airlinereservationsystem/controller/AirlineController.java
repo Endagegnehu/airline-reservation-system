@@ -2,7 +2,7 @@ package com.example.airlinereservationsystem.controller;
 
 import com.example.airlinereservationsystem.domain.Airline;
 import com.example.airlinereservationsystem.dto.AirlineDto;
-import com.example.airlinereservationsystem.service.AirlineService;
+import com.example.airlinereservationsystem.service.interfaces.AirlineService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController

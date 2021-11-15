@@ -42,6 +42,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/flights").permitAll()
+                .antMatchers("/flights/{id}").permitAll()
+                .antMatchers("/flights/{id}/instances").permitAll()
+                .antMatchers("/flights/instances").permitAll()
+                .antMatchers("/admin/flights").permitAll()
+                .antMatchers("/user").hasAnyAuthority(Roles.ROLE_USER.toString())
 
                 .antMatchers("/admin/add-role").hasAnyAuthority(Roles.ROLE_USER.toString())
                 .antMatchers("/users").permitAll()
