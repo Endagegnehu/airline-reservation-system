@@ -1,11 +1,9 @@
 package com.example.airlinereservationsystem.service;
 
-import com.example.airlinereservationsystem.domain.DummyAirline;
-import com.example.airlinereservationsystem.domain.DummyAirport;
-import com.example.airlinereservationsystem.domain.Flight;
+import com.example.airlinereservationsystem.domain.*;
 import com.example.airlinereservationsystem.repository.FlightRespository;
-import com.example.airlinereservationsystem.service.interfaces.DummyAirlineService;
-import com.example.airlinereservationsystem.service.interfaces.DummyAirportService;
+import com.example.airlinereservationsystem.service.interfaces.AirlineService;
+import com.example.airlinereservationsystem.service.interfaces.AirportService;
 import com.example.airlinereservationsystem.service.interfaces.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,10 +21,10 @@ public class FlightServiceImpl implements FlightService {
     private FlightRespository flightRespository;
 
     @Autowired
-    private DummyAirlineService airlineService;
+    private AirlineService airlineService;
 
     @Autowired
-    private DummyAirportService airportService;
+    private AirportService airportService;
 
     @Override
     public List<Flight> findAll() {
@@ -45,15 +43,16 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public Flight addFlight(Flight flight) {
-        DummyAirline airlineDummy = airlineService.findById(flight.getDummyAirline().getId());
-        DummyAirport departureAirportDummy = airportService.findById(flight.getDepartureDummyAirport().getId());
-        DummyAirport arrivalAirportDummy = airportService.findById(flight.getArrivalDummyAirport().getId());
+        Airline airline = airlineService.getAirlineById(flight.getAirline().getId());
+        Airport departureAirport = airportService.getAirportById(flight.getDepartureAirport().getId());
+        Airport arrivalAirport = airportService.getAirportById(flight.getArrivalAirport().getId());
 
-        if (airlineDummy != null && departureAirportDummy != null && arrivalAirportDummy != null ) {
-            flight.setDummyAirline(airlineDummy);
-            flight.setArrivalDummyAirport(arrivalAirportDummy);
-            flight.setDepartureDummyAirport(departureAirportDummy);
+        if (airline != null && departureAirport != null && arrivalAirport != null ) {
+            flight.setAirline(airline);
+            flight.setArrivalAirport(arrivalAirport);
+            flight.setDepartureAirport(departureAirport);
             Flight newFlightObject =  flightRespository.save(flight);
+            System.out.println(newFlightObject.getId());
             return newFlightObject;
         } else {
             return null;

@@ -4,7 +4,7 @@ spring:
   application:
     name: airlineReservationSystem
   datasource:
-    url: jdbc:mysql://localhost:3306/reservation?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/Airline_Reservation_System?createDatabaseIfNotExist=true
     username: root
     password: 1144
     driverClassName: com.mysql.cj.jdbc.Driver

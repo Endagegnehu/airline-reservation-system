@@ -1,7 +1,7 @@
 package com.example.airlinereservationsystem.repository;
 
-import com.example.airlinereservationsystem.domain.DummyAirline;
-import com.example.airlinereservationsystem.domain.DummyAirport;
+import com.example.airlinereservationsystem.domain.Airline;
+import com.example.airlinereservationsystem.domain.Airport;
 import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.domain.FlightInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +34,11 @@ public class DataSeedRunnableRepository implements CommandLineRunner {
     private void  runForFlightAndFlightInstance(){
         /* Flights */
         List<Flight> flights = new ArrayList<>();
-        flights.add( new Flight(120012L, 66, new DummyAirline(), new DummyAirport("AP1"), new DummyAirport("AP4"), LocalTime.of(12,00,00),LocalTime.of(12,00,00 )));
-        flights.add( new Flight(51210L, 55, new DummyAirline(), new DummyAirport("AP2"), new DummyAirport("AP5"), LocalTime.of(12,00,00),LocalTime.of(12,00,00 )));
-        flights.add( new Flight(45762L, 44, new DummyAirline(), new DummyAirport("AP3"), new DummyAirport("AP6"), LocalTime.of(12,00,00),LocalTime.of(12,00,00 )));
-        flights.add( new Flight(156720L, 33, new DummyAirline(), new DummyAirport("AP4"), new DummyAirport("AP7"), LocalTime.of(12,00,00),LocalTime.of(12,00,00 )));
-        flights.add( new Flight(205670L, 77, new DummyAirline(), new DummyAirport("AP5"), new DummyAirport("AP8"), LocalTime.of(12,00,00),LocalTime.of(12,00,00 )));
+        flights.add( new Flight(120012L, 66, new Airline("AL-1", "Airline-name-1"), new Airport("AP1"), new Airport("AP4"), LocalTime.of(12,00,00),LocalTime.of(12,00,00 )));
+        flights.add( new Flight(51210L, 55, new Airline("AL-2", "Airline-name-2"), new Airport("AP2"), new Airport("AP5"), LocalTime.of(12,00,00),LocalTime.of(12,00,00 )));
+        flights.add( new Flight(45762L, 44, new Airline("AL-3", "Airline-name-3"), new Airport("AP3"), new Airport("AP6"), LocalTime.of(12,00,00),LocalTime.of(12,00,00 )));
+        flights.add( new Flight(156720L, 33, new Airline("AL-4", "Airline-name-4"), new Airport("AP4"), new Airport("AP7"), LocalTime.of(12,00,00),LocalTime.of(12,00,00 )));
+        flights.add( new Flight(205670L, 77, new Airline("AL-5", "Airline-name-5"), new Airport("AP5"), new Airport("AP8"), LocalTime.of(12,00,00),LocalTime.of(12,00,00 )));
 
 
         /* Flight Instances */

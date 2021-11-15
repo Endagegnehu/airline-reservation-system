@@ -1,6 +1,5 @@
 package com.example.airlinereservationsystem.service.interfaces;
 
-import com.example.airlinereservationsystem.domain.DummyAirport;
 import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.domain.FlightInstance;
 import org.springframework.data.domain.Page;

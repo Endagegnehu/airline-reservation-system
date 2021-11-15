@@ -1,6 +1,5 @@
 package com.example.airlinereservationsystem.service;
 
-import com.example.airlinereservationsystem.domain.DummyAirport;
 import com.example.airlinereservationsystem.domain.FlightInstance;
 import com.example.airlinereservationsystem.repository.FlightInstanceRepository;
 import com.example.airlinereservationsystem.service.interfaces.FlightInstanceService;

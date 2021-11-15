@@ -1,12 +1,10 @@
 package com.example.airlinereservationsystem.controller;
 
-import com.example.airlinereservationsystem.domain.DummyAirline;
-import com.example.airlinereservationsystem.domain.DummyAirport;
 import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.dto.FlightDto;
 import com.example.airlinereservationsystem.service.FlightServiceImpl;
-import com.example.airlinereservationsystem.service.interfaces.DummyAirlineService;
-import com.example.airlinereservationsystem.service.interfaces.DummyAirportService;
+import com.example.airlinereservationsystem.service.interfaces.AirlineService;
+import com.example.airlinereservationsystem.service.interfaces.AirportService;
 import com.example.airlinereservationsystem.util.ResponseHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +26,10 @@ public class FlightController {
     private ModelMapper modelMapper;
 
     @Autowired
-    private DummyAirportService airportService;
+    private AirportService airportService;
 
     @Autowired
-    private DummyAirlineService airlineService;
+    private AirlineService airlineService;
 
     @GetMapping(value = "/flights")
     public List<Flight> findAll(){
@@ -58,9 +56,9 @@ public class FlightController {
     }
 
     @PostMapping(path = "/admin/flights", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> addFlight(@RequestBody Flight flightDto){
-        Flight flight = modelMapper.map(flightDto, Flight.class);
-        if (flightService.addFlight(modelMapper.map(flightDto, Flight.class)) != null){
+    public ResponseEntity<?> addFlight(@RequestBody FlightDto flightDto){
+        Flight flight = flightService.addFlight(modelMapper.map(flightDto, Flight.class));
+        if ( flight != null){
             return  ResponseHandler.respond("Successfully added a flight!", HttpStatus.OK, flight);
         } else {
             return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);

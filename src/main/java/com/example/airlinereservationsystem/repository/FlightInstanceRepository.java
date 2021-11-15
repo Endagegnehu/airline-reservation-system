@@ -20,7 +20,7 @@ public interface FlightInstanceRepository extends JpaRepository<FlightInstance, 
     @Query("SELECT fi FROM FlightInstance fi WHERE fi.flight.id = :id")
     public Page<FlightInstance> findAllPerFlight(@Param("id") Long id, Pageable pageable);
 
-    @Query("SELECT fi FROM FlightInstance fi JOIN fi.flight f WHERE f.departureDummyAirport.name = :departureAirport and f.arrivalDummyAirport.name = :arrivalAirport and fi.departureDate= :date")
+    @Query("SELECT fi FROM FlightInstance fi JOIN fi.flight f WHERE f.departureAirport.code = :departureAirport and f.arrivalAirport.code = :arrivalAirport and fi.departureDate= :date")
     public Page<FlightInstance> findAllBetweenTwoDestinationsOnADate(@Param("departureAirport")String departureAirport, @Param("arrivalAirport")String arrivalAirport,  @Param("date")LocalDate date, Pageable pageable);
 
 }

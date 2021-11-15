@@ -1,4 +1,4 @@
-package com.example.airlinereservationsystem.service;
+package com.example.airlinereservationsystem.service.interfaces;
 
 import com.example.airlinereservationsystem.domain.Airline;
 
@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface AirlineService {
     List<Airline> getAllAirlines();
     Airline getAirlineByCode(String code);
+    Airline getAirlineById(Long Id);
     void addAirline(Airline airline);
     void updateAirline(Airline airline);
 
