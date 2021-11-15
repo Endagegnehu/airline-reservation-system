@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,9 @@ public class UserServiceImplementation implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -43,6 +47,9 @@ public class UserServiceImplementation implements UserService {
                 return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
             }
         }
+
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
          userRepository.save(user);
         return new ResponseEntity<>("User created successfully", HttpStatus.OK);
     }
@@ -96,4 +103,14 @@ public class UserServiceImplementation implements UserService {
         user.orElseThrow(()-> new UsernameNotFoundException("No user found: "+ username));
         return user.map(UserSecurityDetailsImpl::new).get();
     }
+
+    @Override
+    public void addUser(User user) {
+
+    }
+
+    @Override
+	public Optional<User> findUserByID(long id) {
+        return userRepository.findByID(id);
+	}
 }

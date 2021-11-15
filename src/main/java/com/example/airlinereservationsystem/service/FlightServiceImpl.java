@@ -44,8 +44,8 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public Flight addFlight(Flight flight) {
         Airline airline = airlineService.getAirlineById(flight.getAirline().getId());
-        Airport departureAirport = airportService.getAirportById(flight.getDepartureAirport().getId());
-        Airport arrivalAirport = airportService.getAirportById(flight.getArrivalAirport().getId());
+        Airport departureAirport = airportService.getById(flight.getDepartureAirport().getId());
+        Airport arrivalAirport = airportService.getById(flight.getArrivalAirport().getId());
 
         if (airline != null && departureAirport != null && arrivalAirport != null ) {
             flight.setAirline(airline);
@@ -62,5 +62,10 @@ public class FlightServiceImpl implements FlightService {
 
     public List<Flight> findSomeByAirports(String departure, String destination) {
         return flightRespository.findSomeByAirports(departure, destination);
+    }
+
+    @Override
+    public List<Flight> getFlightByAirlineCode(String code) {
+        return flightRespository.getFlightByAirlineCode(code);
     }
 }

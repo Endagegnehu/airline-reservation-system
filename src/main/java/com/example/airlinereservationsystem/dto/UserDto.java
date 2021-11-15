@@ -4,6 +4,7 @@ import com.example.airlinereservationsystem.domain.Address;
 import com.example.airlinereservationsystem.domain.UserRole;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -13,6 +14,8 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String email;
+    private String dataOfBirth;
+    private String password;
     private List<UserRole> userRole;
     private Address residenceAddress;
 }

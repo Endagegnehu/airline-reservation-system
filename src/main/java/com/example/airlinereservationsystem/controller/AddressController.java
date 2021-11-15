@@ -20,10 +20,12 @@ public class AddressController {
     public ResponseEntity<List<Address>> getAllAddresses(){
         return ResponseEntity.ok().body(addressService.getAllAddresses());
     }
+
     @GetMapping("/addresses/{id}")
     public ResponseEntity<Address> getAddress(@PathVariable long id){
         return ResponseEntity.ok().body( addressService.getAddressById(id));
     }
+
     @DeleteMapping("/admin/addresses/{id}")
     public ResponseEntity<?> deleteAddress(@PathVariable long id){
         addressService.deleteAddress(id);
@@ -41,4 +43,5 @@ public class AddressController {
         addressService.addAddress(address);
         return ResponseEntity.ok().build();
     }
+
 }
