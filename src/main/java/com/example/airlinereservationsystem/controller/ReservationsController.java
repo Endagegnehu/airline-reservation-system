@@ -2,8 +2,10 @@ package com.example.airlinereservationsystem.controller;
 
 
 import com.example.airlinereservationsystem.domain.Reservations;
+import com.example.airlinereservationsystem.domain.Tickets;
 import com.example.airlinereservationsystem.domain.User;
 import com.example.airlinereservationsystem.domain.UserRole;
+import com.example.airlinereservationsystem.dto.ConfirmationDto;
 import com.example.airlinereservationsystem.dto.ReservationsDto;
 import com.example.airlinereservationsystem.dto.UserDto;
 import com.example.airlinereservationsystem.dto.UserRegistrationResponse;
@@ -21,6 +23,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigInteger;
 import java.util.*;
 
 @RestController
@@ -50,4 +54,45 @@ public class ReservationsController {
         reservationsService.addReservation(reservations);
         return ResponseEntity.ok().build();
     }
-}
+    
+    @PostMapping("/reservations/confirm")
+    public  ResponseEntity<?> confirmReservations(@RequestBody ConfirmationDto confirmationDto){
+        Tickets ticket = new Tickets();
+        final Optional<Reservations> reservation = reservationsService.findReservationsByID(confirmationDto.getReservationId());
+        reservation.orElseThrow(()-> new UsernameNotFoundException("No reservation found: "));
+        ticket.setReservation(reservation.get());
+        ticket.setNumber(genrateRandomBigInteger());
+        ticket.setReservationCode(genrateRandomString());
+
+        return ResponseEntity.ok().build();
+
+    }
+    
+    public static BigInteger genrateRandomBigInteger() {
+        BigInteger maxLimit = new BigInteger("99999999999999999999");
+        BigInteger minLimit = new BigInteger("10000000000000000000");
+        BigInteger bigInteger = maxLimit.subtract(minLimit);
+        Random randNum = new Random();
+        int len = maxLimit.bitLength();
+        BigInteger res = new BigInteger(len, randNum);
+        if (res.compareTo(minLimit) < 0)
+           res = res.add(minLimit);
+        if (res.compareTo(bigInteger) >= 0)
+           res = res.mod(bigInteger).add(minLimit);
+         return res;
+     }
+    
+    public static String genrateRandomString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 7) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+
+    }
+    }
+    
