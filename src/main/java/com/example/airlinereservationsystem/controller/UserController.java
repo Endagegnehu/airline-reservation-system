@@ -38,8 +38,8 @@ public class UserController {
 
 
     @GetMapping("/users")
-    public List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
     @PostMapping("/users")
@@ -60,19 +60,22 @@ public class UserController {
             return ResponseEntity.ok(new UserRegistrationResponse(jwt));
         }
     }
-
     @PostMapping("/login")
-    public void login(@RequestBody UserLoginDto userLoginDto) {
+    public ResponseEntity<?> login(@RequestBody UserLoginDto userLoginDto) {
         userService.getUserDetails(userLoginDto.getUsername());
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/admin/add-role")
-    public void addRole(@RequestBody RoleDto userRole) {
+    public ResponseEntity<?> addRole(@RequestBody RoleDto userRole) {
         System.out.println("inside addrole.");
         userService.addRole(userRole);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/admin/remove-role")
-    public void removeRole(@RequestBody RoleDto userRole) {
-        userService.removeRole(userRole);}
+    public ResponseEntity<?> removeRole(@RequestBody RoleDto userRole) {
+        userService.removeRole(userRole);
+        return ResponseEntity.ok().build();
+    }
 }

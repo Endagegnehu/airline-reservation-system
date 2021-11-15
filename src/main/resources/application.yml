@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/reservation
     username: root
-    password: superuser
+    password: password
     driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
