@@ -3,8 +3,6 @@ package com.example.airlinereservationsystem.controller;
 import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.dto.FlightDto;
 import com.example.airlinereservationsystem.service.FlightServiceImpl;
-import com.example.airlinereservationsystem.service.interfaces.AirlineService;
-import com.example.airlinereservationsystem.service.interfaces.AirportService;
 import com.example.airlinereservationsystem.util.ResponseHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +22,6 @@ public class FlightController {
 
     @Autowired
     private ModelMapper modelMapper;
-
-    @Autowired
-    private AirportService airportService;
-
-    @Autowired
-    private AirlineService airlineService;
 
     @GetMapping(value = "/flights")
     public List<Flight> findAll(){
@@ -63,6 +55,12 @@ public class FlightController {
         } else {
             return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @DeleteMapping(path="/admin/flights/{id}")
+    public ResponseEntity<?> deleteFlight(@PathVariable Long id){
+        flightService.removeFlight(id);
+        return  ResponseHandler.respond("Successfully deleted a flight!", HttpStatus.ACCEPTED);
     }
 }
 

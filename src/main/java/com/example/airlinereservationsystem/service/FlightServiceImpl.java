@@ -1,6 +1,7 @@
 package com.example.airlinereservationsystem.service;
 
 import com.example.airlinereservationsystem.domain.*;
+import com.example.airlinereservationsystem.exception.ResourceNotFoundException;
 import com.example.airlinereservationsystem.repository.FlightRespository;
 import com.example.airlinereservationsystem.service.interfaces.AirlineService;
 import com.example.airlinereservationsystem.service.interfaces.AirportService;
@@ -46,7 +47,6 @@ public class FlightServiceImpl implements FlightService {
         Airline airline = airlineService.getAirlineById(flight.getAirline().getId());
         Airport departureAirport = airportService.getAirportById(flight.getDepartureAirport().getId());
         Airport arrivalAirport = airportService.getAirportById(flight.getArrivalAirport().getId());
-
         if (airline != null && departureAirport != null && arrivalAirport != null ) {
             flight.setAirline(airline);
             flight.setArrivalAirport(arrivalAirport);
@@ -55,12 +55,26 @@ public class FlightServiceImpl implements FlightService {
             System.out.println(newFlightObject.getId());
             return newFlightObject;
         } else {
-            return null;
+             throw new ResourceNotFoundException( "child entities are not found to create a flight");
+//             return null;
         }
 
     }
 
+    @Override
     public List<Flight> findSomeByAirports(String departure, String destination) {
         return flightRespository.findSomeByAirports(departure, destination);
+    }
+
+    @Override
+    public boolean removeFlight(Long id) {
+        boolean isFound = flightRespository.existsById(id);
+        if (isFound){
+            flightRespository.deleteById(id);
+//            flightRespository.
+            return isFound;
+        }else{
+            throw new ResourceNotFoundException("flight with id " + id + " not found for deletion");
+        }
     }
 }
