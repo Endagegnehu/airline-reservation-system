@@ -62,6 +62,6 @@ public class AirportController {
     }
     @GetMapping("/airports/{airportCode}/flights")
     public ResponseEntity<List<Flight>> getAllFlightsByAirportCode(@PathVariable String airportCode){
-        return ResponseEntity.ok().body(flightService.getFlightByAirlineCode(airportCode));
+        return ResponseEntity.ok().body(flightService.getOneFlightByDepartureAirportCode(airportCode));
     }
 }

@@ -20,53 +20,59 @@ public class FlightController {
     @Autowired
     FlightServiceImpl flightService;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     @GetMapping(value = "/flights")
-    public List<Flight> findAll(){
+    public List<Flight> findAll() {
         return flightService.findAll();
     }
 
-
     @GetMapping(value = "/flights", params = "paged=true")
-    public Page<Flight> findAll(Pageable pageable){
-        return flightService.findAll(pageable);
+    public ResponseEntity<?> findAll(Pageable pageable) {
+        return ResponseHandler
+                .respond("Success", HttpStatus.OK, flightService.findAll(pageable));
     }
 
     @GetMapping("/flights/{id}")
-    public Flight findById(@PathVariable Long id) {
-        return flightService.findById(id);
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        return ResponseHandler
+                .respond("Success", HttpStatus.OK, flightService.findById(id));
     }
 
     @GetMapping(value = "/flights", params = {"dep", "dest"})
     @ResponseBody
-    public List<Flight> findSomeByAirports(@RequestParam(name = "dep", required = false) String departureAirport,
-                                 @RequestParam(name = "dest", required = false) String destinationAirport){
+    public ResponseEntity<?> findSomeByAirports(@RequestParam(name = "dep", required = false) String departureAirport,
+                                                @RequestParam(name = "dest", required = false) String destinationAirport) {
 
-        return flightService.findSomeByAirports(departureAirport, destinationAirport);
+        return ResponseHandler
+                .respond("Success", HttpStatus.OK, flightService.findSomeByAirports(departureAirport, destinationAirport));
+    }
+
+    @GetMapping(value = "/flights/airline/{code}")
+    @ResponseBody
+    public ResponseEntity<?> findSomeByAirline(@PathVariable String code) {
+        return ResponseHandler
+                .respond("Success", HttpStatus.OK, flightService.findSomeByAirlineCode(code));
     }
 
     @PostMapping(path = "/admin/flights", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> addFlight(@RequestBody FlightDto flightDto){
+    public ResponseEntity<?> addFlight(@RequestBody FlightDto flightDto) {
         Flight flight = flightService.addFlight(flightDto);
-        if ( flight != null){
-            return  ResponseHandler.respond("Successfully added a flight!", HttpStatus.OK, flight);
+        if (flight != null) {
+            return ResponseHandler.respond("Successfully added a flight!", HttpStatus.OK, flight);
         } else {
-            return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
+            return ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping(path = "/admin/flights/{id}", consumes = "application/json")
-    public ResponseEntity<?> updateFlight(@PathVariable Long id,  @RequestBody FlightDto flightDto){
+    public ResponseEntity<?> updateFlight(@PathVariable Long id, @RequestBody FlightDto flightDto) {
         Flight flight = flightService.updateFlightProperty(id, flightDto);
-        return  ResponseHandler.respond("Successfully updated a flight!", HttpStatus.ACCEPTED, flight);
+        return ResponseHandler.respond("Successfully updated a flight!", HttpStatus.ACCEPTED, flight);
     }
 
-    @DeleteMapping(path="/admin/flights/{id}")
-    public ResponseEntity<?> deleteFlight(@PathVariable Long id){
+    @DeleteMapping(path = "/admin/flights/{id}")
+    public ResponseEntity<?> deleteFlight(@PathVariable Long id) {
         flightService.removeFlight(id);
-        return  ResponseHandler.respond("Successfully deleted a flight!", HttpStatus.ACCEPTED);
+        return ResponseHandler.respond("Successfully deleted a flight!", HttpStatus.ACCEPTED);
     }
 }
 

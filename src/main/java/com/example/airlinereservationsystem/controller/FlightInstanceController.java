@@ -25,14 +25,17 @@ public class FlightInstanceController {
 
     @GetMapping(value = "/flights/instances", params = "paged=true")
     public Page<FlightInstance> findAll(Pageable pageable){
-        // exception handler here
         return instanceService.findAll(pageable);
     }
 
     @GetMapping(value = "/flights/{id}/instances", params = "paged=true")
     public Page<FlightInstance> findAllPerFlight(@PathVariable Long id, Pageable pageable){
-        // exception handler here
         return instanceService.findAllPerFlight(id, pageable);
+    }
+
+    @GetMapping(value = "/flights/{id}/instances/{instanceId}")
+    public ResponseEntity<?> findOnePerFlight(@PathVariable Long id, @PathVariable Long instanceId){
+        return ResponseHandler.respond("Success", HttpStatus.OK, instanceService.findOnePerFlight(id, instanceId));
     }
 
     @GetMapping(value = "/flights/instances", params = {"paged=true", "dep", "dest", "date"})
@@ -40,14 +43,17 @@ public class FlightInstanceController {
                                                                      @RequestParam(name = "dest", required = false) String arrivalAirport,
                                                                      @RequestParam(name = "date", required = false) String date,
                                                                      Pageable pageable){
-        // error handler here date format 2018-05-05
         return instanceService.findAllBetweenTwoDestinationsOnADate(departureAirport, arrivalAirport, LocalDate.parse(date), pageable);
     }
 
-    @RequestMapping(value = "/admin/flights/{id}/instances", method = RequestMethod.POST, consumes = "application/json")
+    @PostMapping(value = "/admin/flights/{id}/instances", consumes = "application/json")
     public ResponseEntity<?> addOnaFlight(@PathVariable Long id, @RequestBody FlightInstanceDto flightInstanceDto){
-        instanceService.addOnaFlight(id, flightInstanceDto);
-        return  ResponseHandler.respond("Successfully added a flight instance!", HttpStatus.OK, flightInstanceDto);
+        return  ResponseHandler.respond("Successfully added a flight instance!", HttpStatus.OK, instanceService.addOnaFlight(id, flightInstanceDto));
     }
 
+    @DeleteMapping(value ="/flights/instances/{id}")
+    public ResponseEntity<?> remove(@PathVariable Long id){
+        instanceService.removeInstance(id);
+        return ResponseHandler.respond("Flight instnace deleted successfully ", HttpStatus.OK);
+    }
 }
