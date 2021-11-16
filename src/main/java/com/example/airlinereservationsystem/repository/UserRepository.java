@@ -7,11 +7,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 
 @Repository
+@Transactional
 public interface UserRepository extends CrudRepository<User, Long> {
     @Query(value = "SELECT u from User u where  u.email = :email  and u.password = :password")
     public List<User> login(@Param("email") String email,

@@ -17,9 +17,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Optional;
+
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED)
 public class FlightInstanceServiceImpl implements FlightInstanceService {
 
     @Autowired
@@ -47,6 +48,10 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
     }
 
     @Override
+    public Optional<FlightInstance> findById(long id) {
+        return instanceRepository.findById(id);
+    }
+
     public FlightInstance addOnaFlight(Long id, FlightInstanceDto flightInstanceDto){
         Flight flight = flightService.findById(id);
 
