@@ -9,7 +9,7 @@ import com.example.airlinereservationsystem.domain.Tickets;
 @Service
 @Transactional
 public interface TicketsService {
-    void addTicket(Tickets ticket) ;
+    Tickets addTicket(Tickets ticket) ;
 
 
 }

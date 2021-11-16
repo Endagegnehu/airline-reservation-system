@@ -12,8 +12,8 @@ public class TicketsServiceImplementation implements TicketsService {
 	@Autowired
 	TicketsRepository ticketsRepository;
 	@Override
-	public void addTicket(Tickets ticket) {
-		ticketsRepository.save(ticket);
+	public Tickets addTicket(Tickets ticket) {
+		return ticketsRepository.save(ticket);
 		
 	}
 

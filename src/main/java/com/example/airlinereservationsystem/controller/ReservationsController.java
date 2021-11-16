@@ -7,17 +7,20 @@ import com.example.airlinereservationsystem.domain.Tickets;
 import com.example.airlinereservationsystem.domain.User;
 import com.example.airlinereservationsystem.dto.ConfirmationDto;
 import com.example.airlinereservationsystem.dto.ReservationsDto;
+import com.example.airlinereservationsystem.dto.TicketsDto;
 import com.example.airlinereservationsystem.service.interfaces.FlightInstanceService;
 import com.example.airlinereservationsystem.service.interfaces.ReservationsService;
 import com.example.airlinereservationsystem.service.ReservationsServiceImplementation;
 import com.example.airlinereservationsystem.service.interfaces.TicketsService;
 import com.example.airlinereservationsystem.service.interfaces.UserService;
 import com.example.airlinereservationsystem.util.JwtUtil;
+import com.example.airlinereservationsystem.util.ResponseHandler;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -63,8 +66,12 @@ public class ReservationsController {
         }
        reservations.setFlightInstances(flightInstances);
 
-        reservationsService.addReservation(reservations);
-        return ResponseEntity.ok().build();
+        Reservations respone = reservationsService.addReservation(reservations);
+        if ( respone != null){
+            return  ResponseHandler.respond("Successfully added a flight!", HttpStatus.OK, respone);
+        } else {
+            return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/reservations/confirm")
@@ -73,15 +80,22 @@ public class ReservationsController {
         reservation.orElseThrow(()-> new UsernameNotFoundException("No reservation found: "));
         Reservations reservationObj = reservation.get();
         List<FlightInstance> list = reservationObj.getFlightInstances();
+        //TicketsDto finResponse = new TicketsDto();
+        List<Tickets>  ticketsResponse = new ArrayList<>();
 
         for(int i = 0; i < list.size(); i++) {
             Tickets ticket = new Tickets();
             ticket.setReservation(reservationObj);
             ticket.setNumber(genrateRandomString("numeric"));
             ticket.setReservationCode(genrateRandomString("alpha"));
-            ticketsService.addTicket(ticket);
+            ticketsResponse.add( ticketsService.addTicket(ticket));
         }
-        return ResponseEntity.ok().build();
+        //finResponse.setTickets(ticketsResponse);
+        if ( ticketsResponse.size() != 0 ){
+            return  ResponseHandler.respond("Successfully added a flight!", HttpStatus.OK, ticketsResponse.get(0));
+        } else {
+            return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
+        }
 
     }
 
@@ -104,5 +118,11 @@ public class ReservationsController {
         }
         return salt.toString();
     }
+
+    @RequestMapping(value="reservations", method = RequestMethod.GET)
+    public @ResponseBody List<Reservations> getReservations(@RequestParam("userId") long userId){
+        return reservationsService.getAllByUserId(userId);
     }
+
+}
     
