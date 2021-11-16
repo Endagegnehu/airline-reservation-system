@@ -15,9 +15,9 @@ public class FlightDto {
     private Long id;
     private Long number;
     private Integer numberOfSeats;
-    private Airline airline;
-    private Airport departureAirport;
-    private Airport arrivalAirport;
+    private Long airline;
+    private Long departureAirport;
+    private Long arrivalAirport;
     private LocalTime departureTime;
     private LocalTime arrivalTime;
 

@@ -30,7 +30,7 @@ public class FlightInstance {
     @NonNull
     private LocalDate arrivalDate;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NonNull
     @JoinColumn(name = "flight_id")

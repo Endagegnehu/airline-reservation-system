@@ -49,12 +49,19 @@ public class FlightController {
 
     @PostMapping(path = "/admin/flights", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> addFlight(@RequestBody FlightDto flightDto){
-        Flight flight = flightService.addFlight(modelMapper.map(flightDto, Flight.class));
+//        Flight flight = flightService.addFlight(modelMapper.map(flightDto, Flight.class));
+        Flight flight = flightService.addFlight(flightDto);
         if ( flight != null){
             return  ResponseHandler.respond("Successfully added a flight!", HttpStatus.OK, flight);
         } else {
             return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PutMapping(path = "/admin/flights/{id}", consumes = "application/json")
+    public ResponseEntity<?> updateFlightProperty(@PathVariable Long id,  @RequestBody FlightDto flightDto){
+        Flight flight = flightService.updateFlightProperty(id, flightDto);
+        return  ResponseHandler.respond("Successfully updated a flight!", HttpStatus.ACCEPTED, flight);
     }
 
     @DeleteMapping(path="/admin/flights/{id}")
