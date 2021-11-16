@@ -20,6 +20,8 @@ public class Reservations {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User performedUser;
     @OneToMany (cascade = CascadeType.ALL)
     private List<FlightInstance> flightInstances = new ArrayList<>();
 

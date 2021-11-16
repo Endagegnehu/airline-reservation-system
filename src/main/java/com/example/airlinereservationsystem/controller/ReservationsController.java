@@ -1,11 +1,9 @@
 package com.example.airlinereservationsystem.controller;
 
 
-import com.example.airlinereservationsystem.domain.FlightInstance;
-import com.example.airlinereservationsystem.domain.Reservations;
-import com.example.airlinereservationsystem.domain.Tickets;
-import com.example.airlinereservationsystem.domain.User;
+import com.example.airlinereservationsystem.domain.*;
 import com.example.airlinereservationsystem.dto.ConfirmationDto;
+import com.example.airlinereservationsystem.dto.FlightDto;
 import com.example.airlinereservationsystem.dto.ReservationsDto;
 import com.example.airlinereservationsystem.dto.TicketsDto;
 import com.example.airlinereservationsystem.service.interfaces.FlightInstanceService;
@@ -22,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,27 +47,32 @@ public class ReservationsController {
 
     @Autowired
     ReservationsServiceImplementation reservationsServiceImpl;
-    
+
+
+
     @PostMapping("/reservations")
     public  ResponseEntity<?> addReservation(@RequestBody ReservationsDto reservationsDto){
+
         Reservations reservations = new Reservations();
 
+        // get passanger user
         final Optional<User> user = userService.findUserByID(reservationsDto.getUserId());
         user.orElseThrow(()-> new UsernameNotFoundException("No user found: "));
         reservations.setUser(user.get());
 
+        // get performed action user
         long [] ids = reservationsDto.getFlightInstanceIds();
         List<FlightInstance > flightInstances = new ArrayList<>();
         for (int i = 0; i < ids.length; i++) {
             final Optional<FlightInstance> flightInstance = flightinstanceService.findById(ids[i]);
-            flightInstance.orElseThrow(() -> new UsernameNotFoundException("No reseravation found: "));
+            flightInstance.orElseThrow(() -> new UsernameNotFoundException("No reservation found: "));
             flightInstances.add(flightInstance.get());
         }
        reservations.setFlightInstances(flightInstances);
 
         Reservations respone = reservationsService.addReservation(reservations);
         if ( respone != null){
-            return  ResponseHandler.respond("Successfully added a flight!", HttpStatus.OK, respone);
+            return  ResponseHandler.respond("Successfully added a reservation!", HttpStatus.OK, respone);
         } else {
             return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
         }
@@ -92,7 +96,7 @@ public class ReservationsController {
         }
         //finResponse.setTickets(ticketsResponse);
         if ( ticketsResponse.size() != 0 ){
-            return  ResponseHandler.respond("Successfully added a flight!", HttpStatus.OK, ticketsResponse.get(0));
+            return  ResponseHandler.respond("Successfully added a ticket!", HttpStatus.OK);
         } else {
             return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
         }
@@ -124,5 +128,20 @@ public class ReservationsController {
         return reservationsService.getAllByUserId(userId);
     }
 
+    @PutMapping(path = "/reservations/{id}", consumes = "application/json")
+    public ResponseEntity<?> getAReservationByUserId(@PathVariable Long id,  @RequestParam("userId") long userId){
+        Reservations reservation = reservationsService.getAReservationByUserId(id, userId);
+        return  ResponseHandler.respond("Successfully updated a flight!", HttpStatus.ACCEPTED, reservation);
+    }
+
+    @DeleteMapping(path="/reservations/delete/{id}")
+    public ResponseEntity<?> deleteReservation(@PathVariable long id){
+        final Optional<Reservations> reservation = reservationsService.findReservationsByID(id);
+        if (reservation.isEmpty()){
+            return ResponseEntity.badRequest().body("Reservation with given id doesn't exist");
+        }
+        reservationsService.deleteReservation(id);
+        return ResponseEntity.ok().body("Reservation with code : " + id + " was deleted");
+    }
 }
     

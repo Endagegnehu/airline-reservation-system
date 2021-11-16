@@ -18,6 +18,8 @@ public interface ReservationsService {
       Reservations addReservation(Reservations reservation) ;
       Optional<Reservations> findReservationsByID(long id);
       public List<Reservations> getAllByUserId(long userId);
+      public Reservations getAReservationByUserId(Long id,  long userId);
+      void deleteReservation(long id);
 
 	
 

@@ -1,9 +1,6 @@
 package com.example.airlinereservationsystem.repository;
 
-import com.example.airlinereservationsystem.domain.Airline;
-import com.example.airlinereservationsystem.domain.Airport;
-import com.example.airlinereservationsystem.domain.Flight;
-import com.example.airlinereservationsystem.domain.FlightInstance;
+import com.example.airlinereservationsystem.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -25,6 +22,9 @@ public class DataSeedRunnableRepository implements CommandLineRunner {
 
     @Autowired
     FlightRespository flightRespository;
+
+    @Autowired
+    ReservationsRepository reservationsRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -63,4 +63,9 @@ public class DataSeedRunnableRepository implements CommandLineRunner {
         flightRespository.saveAll(flights);
         flightInstanceRepository.saveAll(flightInstances);
     }
+    /*
+    private  void addReservations(){
+        Reservations res1 = new Reservations();
+
+    }*/
 }

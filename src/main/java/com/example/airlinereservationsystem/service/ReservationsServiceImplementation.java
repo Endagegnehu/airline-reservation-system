@@ -30,4 +30,14 @@ public class ReservationsServiceImplementation implements ReservationsService {
 		return reservationsRepository.getAllByUserId(userId);
 	}
 
+	@Override
+	public Reservations getAReservationByUserId(Long id, long userId) {
+		return reservationsRepository.getAReservationByUserId(id, userId);
+	}
+
+	@Override
+	public void deleteReservation(long id) {
+		reservationsRepository.deleteByID(id);
+	}
+
 }
