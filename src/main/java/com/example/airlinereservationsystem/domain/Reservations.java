@@ -19,9 +19,9 @@ public class Reservations {
     private long ID;
     // todo add flight 
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private User user;
-    @ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany (cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<FlightInstance> flightInstances = new ArrayList<>();
 
 }

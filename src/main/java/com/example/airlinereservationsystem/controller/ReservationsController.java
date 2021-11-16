@@ -55,32 +55,35 @@ public class ReservationsController {
         reservations.setUser(user.get());
 
         long [] ids = reservationsDto.getFlightInstanceIds();
-        /*List<FlightInstance > flightInstances = new ArrayList<>();
+        List<FlightInstance > flightInstances = new ArrayList<>();
         for (int i = 0; i < ids.length; i++) {
             final Optional<FlightInstance> flightInstance = flightinstanceService.findById(ids[i]);
             flightInstance.orElseThrow(() -> new UsernameNotFoundException("No reseravation found: "));
             flightInstances.add(flightInstance.get());
-        }*/
-       //reservations.setFlightInstances(flightInstances);
+        }
+       reservations.setFlightInstances(flightInstances);
 
         reservationsService.addReservation(reservations);
         return ResponseEntity.ok().build();
     }
-    /*
+
     @PostMapping("/reservations/confirm")
     public  ResponseEntity<?> confirmReservations(@RequestBody ConfirmationDto confirmationDto){
-        Tickets ticket = new Tickets();
         final Optional<Reservations> reservation = reservationsService.findReservationsByID(confirmationDto.getReservationId());
         reservation.orElseThrow(()-> new UsernameNotFoundException("No reservation found: "));
         Reservations reservationObj = reservation.get();
-        // get the flights ids and generate tickets based on that ticket
-        ticket.setReservation(reservationObj);
-        ticket.setNumber(genrateRandomString("numeric"));
-        ticket.setReservationCode(genrateRandomString("alpha"));
-        ticketsService.addTicket(ticket);
+        List<FlightInstance> list = reservationObj.getFlightInstances();
+
+        for(int i = 0; i < list.size(); i++) {
+            Tickets ticket = new Tickets();
+            ticket.setReservation(reservationObj);
+            ticket.setNumber(genrateRandomString("numeric"));
+            ticket.setReservationCode(genrateRandomString("alpha"));
+            ticketsService.addTicket(ticket);
+        }
         return ResponseEntity.ok().build();
 
-    }*/
+    }
 
     public static String genrateRandomString(String type) {
         String SALTCHARS = "";

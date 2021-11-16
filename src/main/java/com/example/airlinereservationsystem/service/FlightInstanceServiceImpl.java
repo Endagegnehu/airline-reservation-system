@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 
-
+@Service
 public class FlightInstanceServiceImpl implements FlightInstanceService {
 
     @Autowired

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Optional;
-@Service
+
 public interface FlightInstanceService {
     public Page<FlightInstance> findAll(Pageable pageable);
     public Page<FlightInstance> findAllPerFlight(Long id, Pageable pageable);
