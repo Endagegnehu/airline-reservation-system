@@ -25,9 +25,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-
-    @Temporal(TemporalType.DATE)
-    private Date dataOfBirth;
+    private String dataOfBirth;
 
 //    @ElementCollection
 //    @CollectionTable(name = "userRoles")

@@ -7,5 +7,6 @@ public interface AirlineRepository extends JpaRepository<Airline,Long> {
 
     Airline findByCode(String code);
 
+
     void deleteByCode(String code);
 }

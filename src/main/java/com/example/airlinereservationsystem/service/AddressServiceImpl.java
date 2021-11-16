@@ -4,9 +4,14 @@ import com.example.airlinereservationsystem.domain.Address;
 import com.example.airlinereservationsystem.repository.AddressRepository;
 import com.example.airlinereservationsystem.service.interfaces.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -29,11 +34,6 @@ public class AddressServiceImpl implements AddressService {
         addressRepository.deleteById(id);
     }
 
-    private String street;
-    private String city;
-    private String zipCode;
-    private String state;
-
     @Override
     public Address updateAddress(Address updateAddress, long id) {
         Address address = addressRepository.findById(id).orElse(null);
@@ -46,6 +46,10 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void addAddress(Address address) {
-        addressRepository.save(address);
+
+    }
+
+    public Address getAddressById (Long ID) {
+        return addressRepository.findById(ID).get();
     }
 }

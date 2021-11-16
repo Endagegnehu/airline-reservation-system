@@ -1,5 +1,7 @@
 package com.example.airlinereservationsystem.controller;
 
+import com.example.airlinereservationsystem.domain.Airline;
+import com.example.airlinereservationsystem.domain.Airport;
 import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.dto.FlightDto;
 import com.example.airlinereservationsystem.service.FlightServiceImpl;

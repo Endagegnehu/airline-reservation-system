@@ -1,6 +1,7 @@
 package com.example.airlinereservationsystem.service;
 
 import com.example.airlinereservationsystem.domain.User;
+import com.example.airlinereservationsystem.domain.UserRole;
 import com.example.airlinereservationsystem.dto.RoleDto;
 import com.example.airlinereservationsystem.dto.UserLoginDto;
 import com.example.airlinereservationsystem.dto.UserDto;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +25,9 @@ public class UserServiceImplementation implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -42,6 +47,9 @@ public class UserServiceImplementation implements UserService {
                 return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
             }
         }
+
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
          userRepository.save(user);
         return new ResponseEntity<>("User created successfully", HttpStatus.OK);
     }
@@ -68,8 +76,13 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDto removeRole(RoleDto role) {
+
         User user = userRepository.findByUsername(role.getUserName()).get();
-        user.getRole().remove(role.getRole());
+
+        UserRole userRole = user.getRole()
+                .stream().filter(r-> r.getRoleName()
+                        .equals(role.getRole().getRoleName())).collect(Collectors.toList()).get(0);
+        user.getRole().remove(userRole);
         userRepository.save(user);
         return convertUserToUserDto(user);
     }
@@ -90,4 +103,14 @@ public class UserServiceImplementation implements UserService {
         user.orElseThrow(()-> new UsernameNotFoundException("No user found: "+ username));
         return user.map(UserSecurityDetailsImpl::new).get();
     }
+
+    @Override
+    public void addUser(User user) {
+
+    }
+
+    @Override
+	public Optional<User> findUserByID(long id) {
+        return userRepository.findByID(id);
+	}
 }

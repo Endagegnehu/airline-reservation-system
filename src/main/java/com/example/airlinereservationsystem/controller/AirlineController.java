@@ -14,30 +14,30 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/airlines")
+@RequestMapping
 @Slf4j
 public class AirlineController {
     private final AirlineService AirLineService;
     private final ModelMapper modelMapper;
 
-    @GetMapping
+    @GetMapping("/airlines")
     public ResponseEntity<List<Airline>> getAllAirports(){
         log.info("[INFO] get all airlines");
         return ResponseEntity.ok().body(AirLineService.getAllAirlines());
     }
-    @GetMapping("/{code}")
+    @GetMapping("/airlines/{code}")
     public ResponseEntity<Airline> getAirportByCode(@PathVariable String code){
         log.info("[INFO] get airline by code {}", code);
         return ResponseEntity.ok().body(AirLineService.getAirlineByCode(code));
     }
-    @PostMapping
+    @PostMapping("/admin/airlines")
     public ResponseEntity<?> addAirline(@RequestBody AirlineDto airlineDto){
         Airline airline = modelMapper.map(airlineDto, Airline.class);
         AirLineService.addAirline(airline);
         log.info("[INFO] adding Airline {}", airline);
         return ResponseEntity.ok().build();
     }
-    @PatchMapping("/{code}")
+    @PatchMapping("/admin/airlines/{code}")
     public ResponseEntity<?> updateAirline(@RequestBody AirlineDto airlineDto, @PathVariable String code){
         Airline airline = modelMapper.map(airlineDto, Airline.class);
         AirLineService.updateAirline(airline);
