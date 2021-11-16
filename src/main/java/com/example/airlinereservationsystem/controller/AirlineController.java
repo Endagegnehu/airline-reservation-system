@@ -61,11 +61,13 @@ public class AirlineController {
     }
 
     @DeleteMapping("/admin/airlines/{code}")
-    public ResponseEntity<?> deleteAirport(String code){
-        Optional<Airline> optionalAirline = Optional.ofNullable( AirLineService.getAirlineByCode(code));
+    public ResponseEntity<?> deleteAirport(@PathVariable String code){
+        Optional<Airline> optionalAirline = Optional.ofNullable(AirLineService.getAirlineByCode(code));
+        log.info("[optionalAirline] optionalAirline {}", optionalAirline.toString());
         if (!optionalAirline.isPresent()){
             return ResponseEntity.badRequest().body("Airline with given code doesn't exist");
         }
+        AirLineService.deleteAirline(code);
         return ResponseEntity.ok().body("Airline with code : " + code + " was deleted");
     }
 }

@@ -82,11 +82,12 @@ public class AirportController {
     }
 
     @DeleteMapping("/admin/airports/{code}")
-    public ResponseEntity<?> deleteAirport(String code){
+    public ResponseEntity<?> deleteAirport(@PathVariable String code){
         Optional<Airport> optionalAirport = Optional.ofNullable(airportService.getAirportByCode(code));
         if (!optionalAirport.isPresent()){
             return ResponseEntity.badRequest().body("Airport with given code doesn't exist");
         }
+        airportService.deleteAirport(code);
         return ResponseEntity.ok().body("Airport with code : " + code + " deleted");
     }
 }
