@@ -5,8 +5,6 @@ import com.example.airlinereservationsystem.domain.Airport;
 import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.dto.FlightDto;
 import com.example.airlinereservationsystem.service.FlightServiceImpl;
-import com.example.airlinereservationsystem.service.interfaces.AirlineService;
-import com.example.airlinereservationsystem.service.interfaces.AirportService;
 import com.example.airlinereservationsystem.util.ResponseHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +24,6 @@ public class FlightController {
 
     @Autowired
     private ModelMapper modelMapper;
-
-    @Autowired
-    private AirportService airportService;
-
-    @Autowired
-    private AirlineService airlineService;
 
     @GetMapping(value = "/flights")
     public List<Flight> findAll(){
@@ -59,12 +51,25 @@ public class FlightController {
 
     @PostMapping(path = "/admin/flights", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> addFlight(@RequestBody FlightDto flightDto){
-        Flight flight = flightService.addFlight(modelMapper.map(flightDto, Flight.class));
+//        Flight flight = flightService.addFlight(modelMapper.map(flightDto, Flight.class));
+        Flight flight = flightService.addFlight(flightDto);
         if ( flight != null){
             return  ResponseHandler.respond("Successfully added a flight!", HttpStatus.OK, flight);
         } else {
             return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PutMapping(path = "/admin/flights/{id}", consumes = "application/json")
+    public ResponseEntity<?> updateFlightProperty(@PathVariable Long id,  @RequestBody FlightDto flightDto){
+        Flight flight = flightService.updateFlightProperty(id, flightDto);
+        return  ResponseHandler.respond("Successfully updated a flight!", HttpStatus.ACCEPTED, flight);
+    }
+
+    @DeleteMapping(path="/admin/flights/{id}")
+    public ResponseEntity<?> deleteFlight(@PathVariable Long id){
+        flightService.removeFlight(id);
+        return  ResponseHandler.respond("Successfully deleted a flight!", HttpStatus.ACCEPTED);
     }
 }
 

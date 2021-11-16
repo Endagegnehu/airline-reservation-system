@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -25,17 +27,20 @@ public class Flight {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "airline_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Airline.class)
     @JsonIdentityReference(alwaysAsId = true)
     private Airline airline;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "departure_airport_id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Airport.class)
     @JsonIdentityReference(alwaysAsId = true)
     private Airport departureAirport;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "arrival_airport_id")
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Airport.class)
     @JsonIdentityReference(alwaysAsId = true)
