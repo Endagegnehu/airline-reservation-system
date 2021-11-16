@@ -53,8 +53,8 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public Flight addFlight(FlightDto flightDto) {
         Airline airline = airlineService.getAirlineById(flightDto.getAirline());
-        Airport departureAirport = airportService.getAirportById(flightDto.getDepartureAirport());
-        Airport arrivalAirport = airportService.getAirportById(flightDto.getArrivalAirport());
+        Airport departureAirport = airportService.getById(flightDto.getDepartureAirport());
+        Airport arrivalAirport = airportService.getById(flightDto.getArrivalAirport());
         if (airline != null && departureAirport != null && arrivalAirport != null ) {
             Flight flight = modelMapper.map(flightDto, Flight.class);
             flight.setAirline(airline);
@@ -75,8 +75,8 @@ public class FlightServiceImpl implements FlightService {
     public Flight updateFlightProperty(Long id, FlightDto flightDto) {
         Flight flight  = flightRespository.findById(id).orElseThrow(()->new ResourceNotFoundException("flight with id " + id + " not found for update"));
         Airline airline = flightDto.getAirline() != null ?  airlineService.getAirlineById(flightDto.getAirline()) : null;
-        Airport departureAirport = flightDto.getDepartureAirport() != null ? airportService.getAirportById(flightDto.getDepartureAirport()) : null;
-        Airport arrivalAirport = flightDto.getArrivalAirport() != null ?  airportService.getAirportById(flightDto.getArrivalAirport()) : null;
+        Airport departureAirport = flightDto.getDepartureAirport() != null ? airportService.getById(flightDto.getDepartureAirport()) : null;
+        Airport arrivalAirport = flightDto.getArrivalAirport() != null ?  airportService.getById(flightDto.getArrivalAirport()) : null;
 
         boolean nonNull = Stream.of(flightDto.getNumber(),flightDto.getNumberOfSeats(), flightDto.getAirline(),
                         flightDto.getDepartureAirport(), flightDto.getArrivalAirport(),
@@ -105,5 +105,10 @@ public class FlightServiceImpl implements FlightService {
         }else{
             throw new ResourceNotFoundException("flight with id " + id + " not found for deletion");
         }
+    }
+
+    @Override
+    public List<Flight> getFlightByAirlineCode(String code) {
+        return flightRespository.getFlightByAirlineCode(code);
     }
 }

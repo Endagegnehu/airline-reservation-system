@@ -9,17 +9,17 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Airport {
     @Id @GeneratedValue
     private  Long id;
+    @NonNull
     @Column(nullable = false, unique = true)
     private String code;
+    @NonNull
     @Column(nullable = false)
     private String name;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address;
 
-    public Airport(String code) {
-        this.code = code;
-    }
 }

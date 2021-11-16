@@ -8,12 +8,13 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface FlightService {
-    public List<Flight> findAll();
+    List<Flight> findAll();
 
-    public Page<Flight> findAll(Pageable pageable);
-    public Flight findById(Long id);
-    public Flight addFlight(FlightDto flightDto);
-    public List<Flight> findSomeByAirports(String departure, String destination);
-    public Flight updateFlightProperty(Long id, FlightDto flightDto);
-    public boolean removeFlight(Long id);
+    Page<Flight> findAll(Pageable pageable);
+    Flight findById(Long id);
+    Flight addFlight(FlightDto flightDto);
+    List<Flight> findSomeByAirports(String departure, String destination);
+    Flight updateFlightProperty(Long id, FlightDto flightDto);
+    boolean removeFlight(Long id);
+    List<Flight> getFlightByAirlineCode(String code);
 }
