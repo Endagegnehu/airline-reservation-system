@@ -1,6 +1,6 @@
 package com.example.airlinereservationsystem.util;
 
-import com.example.airlinereservationsystem.exception.ErrorDetails;
+import com.example.airlinereservationsystem.util.exception.ErrorDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

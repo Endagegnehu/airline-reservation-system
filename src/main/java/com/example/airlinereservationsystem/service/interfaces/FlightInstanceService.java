@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public interface FlightInstanceService {
     Page<FlightInstance> findAll(Pageable pageable);
@@ -13,5 +14,6 @@ public interface FlightInstanceService {
     Page<FlightInstance> findAllBetweenTwoDestinationsOnADate(String departureAirport, String arrivalAirport, LocalDate date, Pageable pageable);
     FlightInstance addOnaFlight(Long id, FlightInstanceDto flightInstanceDto);
     FlightInstance findOnePerFlight(Long id, Long instanceId);
+    Optional<FlightInstance> findById(long id);
     void removeInstance(Long id);
 }

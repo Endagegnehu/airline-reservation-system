@@ -1,8 +1,5 @@
 package com.example.airlinereservationsystem.dto;
 
-import com.example.airlinereservationsystem.domain.Airline;
-import com.example.airlinereservationsystem.domain.Airport;
-import com.example.airlinereservationsystem.exception.ResourceNotFoundException;
 import lombok.*;
 
 import java.time.LocalTime;

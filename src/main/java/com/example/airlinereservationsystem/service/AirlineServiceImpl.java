@@ -1,7 +1,7 @@
 package com.example.airlinereservationsystem.service;
 
 import com.example.airlinereservationsystem.domain.Airline;
-import com.example.airlinereservationsystem.exception.ResourceNotFoundException;
+import com.example.airlinereservationsystem.util.exception.ResourceNotFoundException;
 import com.example.airlinereservationsystem.repository.AirlineRepository;
 import com.example.airlinereservationsystem.service.interfaces.AirlineService;
 import lombok.RequiredArgsConstructor;
