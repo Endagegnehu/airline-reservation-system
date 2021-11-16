@@ -1,6 +1,5 @@
 package com.example.airlinereservationsystem.dto;
 
-
 import lombok.Data;
 
 @Data
