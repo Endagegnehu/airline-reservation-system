@@ -11,8 +11,8 @@ import com.example.airlinereservationsystem.service.interfaces.ReservationsServi
 import com.example.airlinereservationsystem.service.ReservationsServiceImplementation;
 import com.example.airlinereservationsystem.service.interfaces.TicketsService;
 import com.example.airlinereservationsystem.service.interfaces.UserService;
-import com.example.airlinereservationsystem.util.JwtUtil;
 import com.example.airlinereservationsystem.util.ResponseHandler;
+import com.example.airlinereservationsystem.util.security.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
