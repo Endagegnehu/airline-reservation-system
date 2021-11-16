@@ -25,11 +25,11 @@ public class Flight {
     @Column(name = "number_of_seats")
     private Integer numberOfSeats;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "airline_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Airline.class)
-    @JsonIdentityReference(alwaysAsId = true)
+//    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Airline.class)
+//    @JsonIdentityReference(alwaysAsId = true)
     private Airline airline;
 
     @ManyToOne(cascade = CascadeType.ALL)

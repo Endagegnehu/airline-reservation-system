@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 @RestController
-//@RequestMapping("/flights")
 public class FlightInstanceController {
     @Autowired
     FlightService flightService;

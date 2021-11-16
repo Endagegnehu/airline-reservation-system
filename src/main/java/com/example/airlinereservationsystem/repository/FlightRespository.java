@@ -15,6 +15,7 @@ import java.util.List;
 public interface FlightRespository extends JpaRepository<Flight, Long> {
     @Query("SELECT f FROM Flight f WHERE f.departureAirport.code = :departure and f.arrivalAirport.code = :destination")
     public List<Flight> findSomeByAirports(@Param("departure") String departure, @Param("destination") String destination);
+
     @Query("select f from Flight f join f.departureAirport a where a.code = ?1")
     List<Flight> getFlightByAirlineCode(String code);
 }

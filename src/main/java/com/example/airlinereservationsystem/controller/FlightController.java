@@ -1,7 +1,5 @@
 package com.example.airlinereservationsystem.controller;
 
-import com.example.airlinereservationsystem.domain.Airline;
-import com.example.airlinereservationsystem.domain.Airport;
 import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.dto.FlightDto;
 import com.example.airlinereservationsystem.service.FlightServiceImpl;
@@ -51,7 +49,6 @@ public class FlightController {
 
     @PostMapping(path = "/admin/flights", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> addFlight(@RequestBody FlightDto flightDto){
-//        Flight flight = flightService.addFlight(modelMapper.map(flightDto, Flight.class));
         Flight flight = flightService.addFlight(flightDto);
         if ( flight != null){
             return  ResponseHandler.respond("Successfully added a flight!", HttpStatus.OK, flight);
@@ -61,7 +58,7 @@ public class FlightController {
     }
 
     @PutMapping(path = "/admin/flights/{id}", consumes = "application/json")
-    public ResponseEntity<?> updateFlightProperty(@PathVariable Long id,  @RequestBody FlightDto flightDto){
+    public ResponseEntity<?> updateFlight(@PathVariable Long id,  @RequestBody FlightDto flightDto){
         Flight flight = flightService.updateFlightProperty(id, flightDto);
         return  ResponseHandler.respond("Successfully updated a flight!", HttpStatus.ACCEPTED, flight);
     }
