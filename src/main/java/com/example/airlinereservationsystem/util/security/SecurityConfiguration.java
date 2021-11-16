@@ -1,4 +1,4 @@
-package com.example.airlinereservationsystem.util;
+package com.example.airlinereservationsystem.util.security;
 
 import com.example.airlinereservationsystem.util.constant.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,8 +69,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/reservations/ticket/{id}").permitAll()
                 .antMatchers("/reservations/delete/{id}").permitAll()
                 .antMatchers("/airports", "/airlines").hasAnyAuthority(Roles.ROLE_USER.toString()).
-                antMatchers("/airports", "/airlines").permitAll().
-
+                antMatchers("/airports", "/airlines","/airlines/{code}").permitAll().
+                antMatchers("/login").permitAll().
                 anyRequest().authenticated().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

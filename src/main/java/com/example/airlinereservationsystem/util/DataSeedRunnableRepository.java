@@ -1,6 +1,10 @@
-package com.example.airlinereservationsystem.repository;
+package com.example.airlinereservationsystem.util;
 
 import com.example.airlinereservationsystem.domain.*;
+import com.example.airlinereservationsystem.repository.FlightInstanceRepository;
+import com.example.airlinereservationsystem.repository.FlightRespository;
+import com.example.airlinereservationsystem.service.interfaces.UserService;
+import com.example.airlinereservationsystem.util.constant.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -24,14 +28,41 @@ public class DataSeedRunnableRepository implements CommandLineRunner {
     FlightRespository flightRespository;
 
     @Autowired
-    ReservationsRepository reservationsRepository;
+    UserService userService;
 
     @Override
     public void run(String... args) throws Exception {
         runForFlightAndFlightInstance();
     }
 
+    /***
+     * This method creates admin user and flights
+     */
     private void  runForFlightAndFlightInstance(){
+
+        // Admin address
+        Address address = new Address();
+        address.setCity("Fairfield");
+        address.setState("IOWA");
+        address.setZipCode("52557");
+        address.setStreet("1000th N 4th Street");
+
+        // Admin user
+        List<UserRole> userRoles = new ArrayList<>();
+        UserRole userRole = new UserRole();
+        userRole.setRoleName(Roles.ROLE_ADMIN);
+        userRoles.add(userRole);
+
+        User user = new User();
+        user.setPassword("admin");
+        user.setRole(userRoles);
+        user.setDataOfBirth("23/09/1995");
+        user.setEmail("admin@gmail.com");
+        user.setFirstName("Alex");
+        user.setLastName("Molli");
+        user.setResidenceAddress(address);
+        user.setUsername("admin");
+
         /* Flights */
         List<Flight> flights = new ArrayList<>();
         flights.add( new Flight(120012L, 66, new Airline("AL-1", "Airline-name-1"), new Airport("AP1", "airport-1"), new Airport("AP14", "airport-6"), LocalTime.of(12,00,00),LocalTime.of(12,00,00 )));
@@ -60,12 +91,8 @@ public class DataSeedRunnableRepository implements CommandLineRunner {
         flightInstances.add( new FlightInstance(LocalDate.of(2020, 11, 8), LocalDate.of(2020, 11, 8), flights.get(1)));
 
 
+        userService.signup(user);
         flightRespository.saveAll(flights);
         flightInstanceRepository.saveAll(flightInstances);
     }
-    /*
-    private  void addReservations(){
-        Reservations res1 = new Reservations();
-
-    }*/
 }

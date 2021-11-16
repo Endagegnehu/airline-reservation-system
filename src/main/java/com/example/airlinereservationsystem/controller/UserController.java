@@ -2,22 +2,26 @@ package com.example.airlinereservationsystem.controller;
 
 import com.example.airlinereservationsystem.domain.User;
 import com.example.airlinereservationsystem.domain.UserRole;
-import com.example.airlinereservationsystem.dto.RoleDto;
-import com.example.airlinereservationsystem.dto.UserLoginDto;
-import com.example.airlinereservationsystem.dto.UserDto;
-import com.example.airlinereservationsystem.dto.UserRegistrationResponse;
+import com.example.airlinereservationsystem.dto.*;
 import com.example.airlinereservationsystem.service.interfaces.UserService;
-import com.example.airlinereservationsystem.util.JwtUtil;
+import com.example.airlinereservationsystem.util.exception.ErrorDetails;
+import com.example.airlinereservationsystem.util.security.JwtUtil;
 import com.example.airlinereservationsystem.util.constant.Roles;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticatedPrincipal;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.*;
 
@@ -36,9 +40,12 @@ public class UserController {
     @Autowired
     JwtUtil jwtUtil;
 
+    @Qualifier("encoder")
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
@@ -62,8 +69,16 @@ public class UserController {
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDto userLoginDto) {
-        userService.getUserDetails(userLoginDto.getUsername());
-        return ResponseEntity.ok().build();
+       UserDetails userDetails =  userService.getUserDetails(userLoginDto.getUsername());
+
+       if(passwordEncoder.matches(userLoginDto.getPassword(),userDetails.getPassword())){
+           final Map<String, Object> jwt  = jwtUtil.generateToken(userDetails);
+           logger.info("JWT: " + jwt);
+           return ResponseEntity.ok(new UserRegistrationResponse(jwt));
+       }else{
+            return new ResponseEntity<>(new ErrorDetails(new Date(),"No user found","Please check your username or password")
+                    ,HttpStatus.UNAUTHORIZED);
+       }
     }
 
     @PostMapping("/admin/add-role")

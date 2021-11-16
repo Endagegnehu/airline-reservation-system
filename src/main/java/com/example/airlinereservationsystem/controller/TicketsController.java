@@ -3,7 +3,7 @@ package com.example.airlinereservationsystem.controller;
 
 import com.example.airlinereservationsystem.service.interfaces.TicketsService;
 import com.example.airlinereservationsystem.service.TicketsServiceImplementation;
-import com.example.airlinereservationsystem.util.JwtUtil;
+import com.example.airlinereservationsystem.util.security.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

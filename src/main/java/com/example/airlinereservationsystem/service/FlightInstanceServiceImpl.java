@@ -2,9 +2,8 @@ package com.example.airlinereservationsystem.service;
 
 import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.domain.FlightInstance;
-import com.example.airlinereservationsystem.dto.FlightDto;
 import com.example.airlinereservationsystem.dto.FlightInstanceDto;
-import com.example.airlinereservationsystem.exception.ResourceNotFoundException;
+import com.example.airlinereservationsystem.util.exception.ResourceNotFoundException;
 import com.example.airlinereservationsystem.repository.FlightInstanceRepository;
 import com.example.airlinereservationsystem.service.interfaces.FlightInstanceService;
 import com.example.airlinereservationsystem.service.interfaces.FlightService;

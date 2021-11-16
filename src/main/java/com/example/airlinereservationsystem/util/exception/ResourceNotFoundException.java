@@ -1,4 +1,4 @@
-package com.example.airlinereservationsystem.exception;
+package com.example.airlinereservationsystem.util.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
