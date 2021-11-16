@@ -28,6 +28,8 @@ public class AirportController {
     private final AddressService addressService;
     private final ModelMapper modelMapper;
 
+    private int codeLength = 3;
+
     @GetMapping("/airports")
     public ResponseEntity<List<Airport>> getAllAirports(){
         log.info("get all airports");
@@ -42,10 +44,13 @@ public class AirportController {
     @PostMapping("/admin/airports")
     public ResponseEntity<?> addAirport(@RequestBody AirportDto airportDto){
         log.info("[INFO] AirPORT DTO {}", airportDto);
+        if( airportDto.getCode().isEmpty() || airportDto.getName().isEmpty() || airportDto.getCode().length()!=codeLength){
+            return ResponseEntity.badRequest().body("Given attributes are not valid");
+        }
         Airport airport = modelMapper.map(airportDto, Airport.class);
         Optional<Address> addressOptional = Optional.ofNullable(addressService.getAddressById(airportDto.getAddress_id()));
         if (!addressOptional.isPresent()){
-            throw new IllegalStateException("Incorrect address id: " + airportDto.getAddress_id());
+            return ResponseEntity.badRequest().body("Address with given ID doesn't exist");
         }
         airport.setAddress(addressOptional.get());
         airportService.addAirport(airport);
@@ -53,7 +58,18 @@ public class AirportController {
     }
     @PatchMapping("/admin/airports/{code}")
     public ResponseEntity<?> updateAirport(@RequestBody AirportDto airportDto, @PathVariable String code){
-        Airport airport = airportService.getAirportByCode(code);
+        if( airportDto.getCode().isEmpty() || airportDto.getName().isEmpty() || airportDto.getCode().length()!=codeLength){
+            return ResponseEntity.badRequest().body("Given attributes are not valid");
+        }
+        Optional<Address> addressOptional = Optional.ofNullable(addressService.getAddressById(airportDto.getAddress_id()));
+        if (!addressOptional.isPresent()){
+            return ResponseEntity.badRequest().body("Address with given ID doesn't exist");
+        }
+        Optional<Airport> optionalAirport = Optional.ofNullable(airportService.getAirportByCode(code));
+        if (!optionalAirport.isPresent()){
+            return ResponseEntity.badRequest().body("Airport with given code doesn't exist");
+        }
+        Airport airport = optionalAirport.get();
         airport.setCode(airportDto.getCode());
         airport.setName(airportDto.getName());
         airport.setAddress(addressService.getAddressById(airportDto.getAddress_id()));
@@ -63,5 +79,14 @@ public class AirportController {
     @GetMapping("/airports/{airportCode}/flights")
     public ResponseEntity<List<Flight>> getAllFlightsByAirportCode(@PathVariable String airportCode){
         return ResponseEntity.ok().body(flightService.getFlightByAirlineCode(airportCode));
+    }
+
+    @DeleteMapping("/admin/airports/{code}")
+    public ResponseEntity<?> deleteAirport(String code){
+        Optional<Airport> optionalAirport = Optional.ofNullable(airportService.getAirportByCode(code));
+        if (!optionalAirport.isPresent()){
+            return ResponseEntity.badRequest().body("Airport with given code doesn't exist");
+        }
+        return ResponseEntity.ok().body("Airport with code : " + code + " deleted");
     }
 }
