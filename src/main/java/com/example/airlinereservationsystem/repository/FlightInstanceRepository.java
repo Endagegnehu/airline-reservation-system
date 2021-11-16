@@ -3,6 +3,7 @@ package com.example.airlinereservationsystem.repository;
 import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.domain.FlightInstance;
 import com.example.airlinereservationsystem.domain.User;
+import com.example.airlinereservationsystem.dto.FlightDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -31,30 +31,30 @@ public class AirlineReservationSystemApplication {
     public ModelMapper modelMapper(){
         return new ModelMapper();
     }
-
-    @Bean
-    CommandLineRunner run (AirlineRepository airlineRepository, AirportRepository airportRepository, FlightRespository flightRespository) {
-        return args->{
-            Airport airport = new Airport();
-            airport.setName("JFK NY Airport");
-            airport.setCode("JFK");
-
-            Address address = new Address();
-            address.setCity("City");
-            address.setState("State");
-            address.setStreet("Street");
-            address.setZipCode("ZipCode");
-//            addressRepository.save(address);
-            airport.setAddress(address);
-
-            Airline airline = new Airline();
-            airline.setHistory("bla bla bla history");
-            airline.setName("MyAirlines");
-            airline.setCode("M01");
-
-            airlineRepository.save(airline);
-            airportRepository.save(airport);
-
-        };
-    }
+//
+//    @Bean
+//    CommandLineRunner run (AirlineRepository airlineRepository, AirportRepository airportRepository, FlightRespository flightRespository) {
+//        return args->{
+//            Airport airport = new Airport();
+//            airport.setName("JFK NY Airport");
+//            airport.setCode("JFK");
+//
+//            Address address = new Address();
+//            address.setCity("City");
+//            address.setState("State");
+//            address.setStreet("Street");
+//            address.setZipCode("ZipCode");
+////            addressRepository.save(address);
+//            airport.setAddress(address);
+//
+//            Airline airline = new Airline();
+//            airline.setHistory("bla bla bla history");
+//            airline.setName("MyAirlines");
+//            airline.setCode("M01");
+//
+//            airlineRepository.save(airline);
+//            airportRepository.save(airport);
+//
+//        };
+//    }
 }
