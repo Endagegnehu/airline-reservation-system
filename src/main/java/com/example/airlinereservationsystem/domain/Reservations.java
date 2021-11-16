@@ -17,8 +17,12 @@ public class Reservations {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long ID;
-    // todo add flight 
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User performedUser;
+    @OneToMany (cascade = CascadeType.ALL)
+    private List<FlightInstance> flightInstances = new ArrayList<>();
+
 }

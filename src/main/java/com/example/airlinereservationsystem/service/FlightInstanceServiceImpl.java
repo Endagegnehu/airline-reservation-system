@@ -2,9 +2,8 @@ package com.example.airlinereservationsystem.service;
 
 import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.domain.FlightInstance;
-import com.example.airlinereservationsystem.dto.FlightDto;
 import com.example.airlinereservationsystem.dto.FlightInstanceDto;
-import com.example.airlinereservationsystem.exception.ResourceNotFoundException;
+import com.example.airlinereservationsystem.util.exception.ResourceNotFoundException;
 import com.example.airlinereservationsystem.repository.FlightInstanceRepository;
 import com.example.airlinereservationsystem.service.interfaces.FlightInstanceService;
 import com.example.airlinereservationsystem.service.interfaces.FlightService;
@@ -18,9 +17,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Optional;
+
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED)
 public class FlightInstanceServiceImpl implements FlightInstanceService {
 
     @Autowired
@@ -59,6 +59,10 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
     }
 
     @Override
+    public Optional<FlightInstance> findById(long id) {
+        return instanceRepository.findById(id);
+    }
+
     public FlightInstance addOnaFlight(Long id, FlightInstanceDto flightInstanceDto){
         Flight flight = flightService.findById(id);
 

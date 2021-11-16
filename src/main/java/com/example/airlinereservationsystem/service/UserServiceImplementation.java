@@ -5,10 +5,13 @@ import com.example.airlinereservationsystem.domain.UserRole;
 import com.example.airlinereservationsystem.dto.RoleDto;
 import com.example.airlinereservationsystem.dto.UserLoginDto;
 import com.example.airlinereservationsystem.dto.UserDto;
+import com.example.airlinereservationsystem.dto.UserResponseDto;
 import com.example.airlinereservationsystem.repository.UserRepository;
 import com.example.airlinereservationsystem.service.interfaces.UserService;
-import com.example.airlinereservationsystem.util.UserSecurityDetailsImpl;
+import com.example.airlinereservationsystem.util.security.UserSecurityDetailsImpl;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,15 +29,22 @@ public class UserServiceImplementation implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Qualifier("encoder")
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
-    public List<UserDto> getAllUsers() {
+    public List<UserResponseDto> getAllUsers() {
+        modelMapper.map(User.class, UserResponseDto.class);
         return ((List<User>) userRepository
                 .findAll())
                 .stream()
-                .map(this::convertUserToUserDto)
+                .map(user->
+                    modelMapper.map(user, UserResponseDto.class)
+                 )
                 .collect(Collectors.toList());
 
     }

@@ -1,4 +1,4 @@
-package com.example.airlinereservationsystem.util;
+package com.example.airlinereservationsystem.util.security;
 
 import com.example.airlinereservationsystem.service.UserServiceImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
