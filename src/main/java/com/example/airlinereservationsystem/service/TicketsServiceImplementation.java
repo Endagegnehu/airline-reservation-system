@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.example.airlinereservationsystem.domain.Tickets;
 import com.example.airlinereservationsystem.repository.TicketsRepository;
 
+import java.util.List;
+
 @Service
 public class TicketsServiceImplementation implements TicketsService {
 	@Autowired
@@ -15,6 +17,11 @@ public class TicketsServiceImplementation implements TicketsService {
 	public Tickets addTicket(Tickets ticket) {
 		return ticketsRepository.save(ticket);
 		
+	}
+
+	@Override
+	public List<Tickets> getATicket(Long reservationId) {
+		return ticketsRepository.getATicket(reservationId);
 	}
 
 }

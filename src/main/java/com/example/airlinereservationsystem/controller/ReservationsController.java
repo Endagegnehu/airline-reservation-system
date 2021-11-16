@@ -90,6 +90,7 @@ public class ReservationsController {
         for(int i = 0; i < list.size(); i++) {
             Tickets ticket = new Tickets();
             ticket.setReservation(reservationObj);
+            ticket.setFlightInstance(list.get(i));
             ticket.setNumber(genrateRandomString("numeric"));
             ticket.setReservationCode(genrateRandomString("alpha"));
             ticketsResponse.add( ticketsService.addTicket(ticket));
@@ -128,13 +129,16 @@ public class ReservationsController {
         return reservationsService.getAllByUserId(userId);
     }
 
-    @PutMapping(path = "/reservations/{id}", consumes = "application/json")
-    public ResponseEntity<?> getAReservationByUserId(@PathVariable Long id,  @RequestParam("userId") long userId){
-        Reservations reservation = reservationsService.getAReservationByUserId(id, userId);
-        return  ResponseHandler.respond("Successfully updated a flight!", HttpStatus.ACCEPTED, reservation);
+    @RequestMapping(value="/reservations/{id}", method = RequestMethod.GET)
+    public  @ResponseBody Reservations getAReservationByUserId(@PathVariable Long id,  @RequestParam("userId") long userId){
+       return reservationsService.getAReservationByUserId(id, userId);
+    }
+    @RequestMapping(value="/reservations/tickets/{id}", method = RequestMethod.GET)
+    public  @ResponseBody List<Tickets> getAReservationByUserId(@PathVariable Long id){
+        return ticketsService.getATicket(id);
     }
 
-    @DeleteMapping(path="/reservations/delete/{id}")
+    @DeleteMapping(path="/reservations{id}")
     public ResponseEntity<?> deleteReservation(@PathVariable long id){
         final Optional<Reservations> reservation = reservationsService.findReservationsByID(id);
         if (reservation.isEmpty()){

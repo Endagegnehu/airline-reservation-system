@@ -32,10 +32,12 @@ public class Tickets {
     private String reservationCode;
 
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "reservation_id", referencedColumnName = "ID")
     private Reservations reservation;
 
-
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "flight_instance_id", referencedColumnName = "ID")
+    private FlightInstance flightInstance;
 }
