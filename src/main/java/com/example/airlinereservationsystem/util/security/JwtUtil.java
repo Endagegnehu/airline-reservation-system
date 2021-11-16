@@ -1,4 +1,4 @@
-package com.example.airlinereservationsystem.util;
+package com.example.airlinereservationsystem.util.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

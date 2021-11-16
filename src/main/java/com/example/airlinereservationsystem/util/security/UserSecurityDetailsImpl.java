@@ -1,4 +1,4 @@
-package com.example.airlinereservationsystem.util;
+package com.example.airlinereservationsystem.util.security;
 
 import com.example.airlinereservationsystem.domain.User;
 import com.example.airlinereservationsystem.domain.UserRole;
