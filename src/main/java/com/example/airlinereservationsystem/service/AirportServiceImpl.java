@@ -1,6 +1,7 @@
 package com.example.airlinereservationsystem.service;
 
 import com.example.airlinereservationsystem.domain.Airport;
+import com.example.airlinereservationsystem.util.exception.ResourceNotFoundException;
 import com.example.airlinereservationsystem.repository.AirportRepository;
 import com.example.airlinereservationsystem.service.interfaces.AirportService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class AirportServiceImpl implements AirportService {
 
     @Override
     public Airport getById(Long id) {
-        return repository.getById(id);
+        return repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Airport with id " + id + " not found"));
     }
 
     @Override
