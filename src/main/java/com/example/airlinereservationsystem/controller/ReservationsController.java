@@ -11,6 +11,7 @@ import com.example.airlinereservationsystem.service.interfaces.ReservationsServi
 import com.example.airlinereservationsystem.service.ReservationsServiceImplementation;
 import com.example.airlinereservationsystem.service.interfaces.TicketsService;
 import com.example.airlinereservationsystem.service.interfaces.UserService;
+import com.example.airlinereservationsystem.util.Email;
 import com.example.airlinereservationsystem.util.ResponseHandler;
 import com.example.airlinereservationsystem.util.security.JwtUtil;
 import com.example.airlinereservationsystem.util.constant.Roles;
@@ -19,7 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +30,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -49,6 +53,8 @@ public class ReservationsController {
     @Autowired
     JwtUtil jwtUtil;
 
+    @Autowired
+    RestTemplate restTemplate;
     @Autowired
     ReservationsServiceImplementation reservationsServiceImpl;
 
@@ -112,6 +118,7 @@ public class ReservationsController {
         }
         //finResponse.setTickets(ticketsResponse);
         if ( ticketsResponse.size() != 0 ){
+            sendAnEmail(reservationObj, user);
             return  ResponseHandler.respond("Successfully added a ticket!", HttpStatus.OK);
         } else {
             return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
@@ -172,6 +179,18 @@ public class ReservationsController {
         final Optional<User> user = userService.findUserByUsername(userName);
         user.orElseThrow(()-> new UsernameNotFoundException("No user found: "));
         return user.get();
+    }
+
+    public void sendAnEmail(Reservations reservation, User user){
+        //Email email = new Email(user.getEmail(), "");
+        Email email = new Email("basmaashouur@gmail.com",
+                "You have a reserved a flight with code 1234" , "Flight Reservation");
+        String url = "http://localhost:8081/sendEmail";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        ResponseEntity<String> status =  restTemplate.postForEntity(url, email, String.class);
+
     }
 }
     
