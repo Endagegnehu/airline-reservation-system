@@ -4,6 +4,7 @@ import com.example.airlinereservationsystem.domain.User;
 import com.example.airlinereservationsystem.domain.UserRole;
 import com.example.airlinereservationsystem.dto.*;
 import com.example.airlinereservationsystem.service.interfaces.UserService;
+import com.example.airlinereservationsystem.util.ScheduledTasks;
 import com.example.airlinereservationsystem.util.constant.Roles;
 import com.example.airlinereservationsystem.util.exception.ErrorDetails;
 import com.example.airlinereservationsystem.util.security.JwtUtil;
@@ -35,12 +36,16 @@ public class UserController {
     @Autowired
     JwtUtil jwtUtil;
 
+    @Autowired
+    ScheduledTasks scheduledTasks;
+
     @Qualifier("encoder")
     @Autowired
     PasswordEncoder passwordEncoder;
 
     @GetMapping("/users")
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+        scheduledTasks.reportCurrentTime();
         return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
