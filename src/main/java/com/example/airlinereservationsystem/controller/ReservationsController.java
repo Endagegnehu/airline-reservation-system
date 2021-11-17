@@ -85,6 +85,7 @@ public class ReservationsController {
 
         Reservations respone = reservationsService.addReservation(reservations);
         if ( respone != null){
+
             return  ResponseHandler.respond("Successfully added a reservation!", HttpStatus.OK, respone);
         } else {
             return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
@@ -118,7 +119,7 @@ public class ReservationsController {
         }
         //finResponse.setTickets(ticketsResponse);
         if ( ticketsResponse.size() != 0 ){
-            sendAnEmail(reservationObj, user);
+            // sendAnEmail(reservationObj, user);
             return  ResponseHandler.respond("Successfully added a ticket!", HttpStatus.OK);
         } else {
             return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
@@ -180,17 +181,20 @@ public class ReservationsController {
         user.orElseThrow(()-> new UsernameNotFoundException("No user found: "));
         return user.get();
     }
-
-    public void sendAnEmail(Reservations reservation, User user){
-        //Email email = new Email(user.getEmail(), "");
-        Email email = new Email("basmaashouur@gmail.com",
-                "You have a reserved a flight with code 1234" , "Flight Reservation");
-        String url = "http://localhost:8081/sendEmail";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        ResponseEntity<String> status =  restTemplate.postForEntity(url, email, String.class);
-
-    }
+//
+//    public void sendAnEmail(Reservations reservation, User user){
+//        //Email email = new Email(user.getEmail(), "");
+//        Email email = new Email("basmaashouur@gmail.com",
+//                "You have a reserved a flight with code 1234" , "Flight Reservation");
+//        String url = "http://localhost:8081/sendEmail";
+//
+//        System.out.println("inside send Email");
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//        ResponseEntity<String> status =  restTemplate.postForEntity(url, email, String.class);
+//        System.out.println("Response : " + status);
+//
+//    }
 }
     

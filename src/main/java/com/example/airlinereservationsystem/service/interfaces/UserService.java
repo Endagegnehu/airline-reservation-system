@@ -19,15 +19,12 @@ public interface UserService {
     ResponseEntity<?> signup(User user);
 
     Optional<User> findUserByUsername(String firstName);
+
     Optional<User> findUserByID(long id);
-    boolean login(UserLoginDto userLoginDto);
 
     UserDto addRole(RoleDto role);
 
     UserDto removeRole(RoleDto role);
 
     UserDetails getUserDetails(String firstName);
-
-    void addUser(User user);
-
 }

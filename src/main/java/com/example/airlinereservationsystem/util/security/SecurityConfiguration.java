@@ -74,6 +74,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/reservations/{id}").hasAnyAuthority(Roles.ROLE_AGENT.toString(), Roles.ROLE_USER.toString() )
                 .antMatchers(HttpMethod.DELETE,"/reservations/{id}").hasAnyAuthority(Roles.ROLE_AGENT.toString(), Roles.ROLE_USER.toString() )
                 .antMatchers(HttpMethod.GET,"/reservations/tickets/{id}").hasAnyAuthority(Roles.ROLE_AGENT.toString(), Roles.ROLE_USER.toString() )
+                .antMatchers(HttpMethod.PUT, "/admin/addresses/*").hasAnyAuthority(Roles.ROLE_ADMIN.toString(), Roles.ROLE_USER.toString(), Roles.ROLE_AGENT.toString())
+                .antMatchers(HttpMethod.POST, "/admin/addresses/*").hasAnyAuthority(Roles.ROLE_ADMIN.toString(), Roles.ROLE_USER.toString(), Roles.ROLE_AGENT.toString())
+                .antMatchers(HttpMethod.DELETE, "/admin/addresses/*").hasAnyAuthority(Roles.ROLE_ADMIN.toString(), Roles.ROLE_USER.toString(), Roles.ROLE_AGENT.toString())
 
                 .antMatchers("/airports", "/airlines").hasAnyAuthority(Roles.ROLE_USER.toString()).
                 antMatchers("/airports", "/airlines","/airlines/{code}").permitAll().

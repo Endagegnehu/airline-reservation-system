@@ -4,10 +4,6 @@ import com.example.airlinereservationsystem.domain.Address;
 import com.example.airlinereservationsystem.repository.AddressRepository;
 import com.example.airlinereservationsystem.service.interfaces.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +12,13 @@ import java.util.Optional;
 
 @Service
 public class AddressServiceImpl implements AddressService {
-    @Autowired
+
     private AddressRepository addressRepository;
+
+    @Autowired
+    public AddressServiceImpl(AddressRepository addressRepository){
+        this.addressRepository = addressRepository;
+    }
 
     @Override
     public List<Address> getAllAddresses() {
@@ -26,30 +27,38 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Address getAddressById(long id) {
+        Optional<Address> address = addressRepository.findById(id);
+        if(!address.isPresent()){
+            throw new IllegalStateException("Address with given ID does not exist (Id: " + id);
+        }
+
         return addressRepository.findById(id).orElse(null);
     }
 
     @Override
     public void deleteAddress(long id) {
+        Optional<Address> address = addressRepository.findById(id);
+        if(!address.isPresent()){
+            throw new IllegalStateException("Address with given ID does not exist (Id: " + id);
+        }
         addressRepository.deleteById(id);
     }
 
     @Override
     public Address updateAddress(Address updateAddress, long id) {
-        Address address = addressRepository.findById(id).orElse(null);
-        address.setStreet(updateAddress.getStreet());
-        address.setZipCode(updateAddress.getZipCode());
-        address.setCity(updateAddress.getCity());
-        address.setState(updateAddress.getState());
-        return addressRepository.save(address);
+        Optional<Address> address = addressRepository.findById(id);
+        if(!address.isPresent()){
+                throw new IllegalStateException("Address with given ID does not exist (Id: " + updateAddress.getId()+")");
+            }
+        address.get().setStreet(updateAddress.getStreet());
+        address.get().setZipCode(updateAddress.getZipCode());
+        address.get().setCity(updateAddress.getCity());
+        address.get().setState(updateAddress.getState());
+        return addressRepository.save(address.get());
     }
 
     @Override
     public void addAddress(Address address) {
-
-    }
-
-    public Address getAddressById (Long ID) {
-        return addressRepository.findById(ID).get();
+        addressRepository.save(address);
     }
 }
