@@ -3,9 +3,11 @@ package com.example.airlinereservationsystem.controller;
 
 import com.example.airlinereservationsystem.domain.Tickets;
 import com.example.airlinereservationsystem.domain.User;
+import com.example.airlinereservationsystem.dto.TicketsResponseDto;
 import com.example.airlinereservationsystem.service.interfaces.TicketsService;
 import com.example.airlinereservationsystem.service.TicketsServiceImplementation;
 import com.example.airlinereservationsystem.service.interfaces.UserService;
+import com.example.airlinereservationsystem.util.ResponseHandler;
 import com.example.airlinereservationsystem.util.security.JwtUtil;
 import com.example.airlinereservationsystem.util.security.UserAuth;
 import org.modelmapper.ModelMapper;
@@ -39,10 +41,11 @@ public class TicketsController {
 
     @RequestMapping(value="/reservations/tickets/{id}", method = RequestMethod.GET)
     public  @ResponseBody
-    List<Tickets> getTickets(@PathVariable Long id){
+    TicketsResponseDto getTickets(@PathVariable Long id){
         UserAuth userAuth = new UserAuth();
         User user = userAuth.getUserFromAuth(userService);
-        return ticketsService.getTickets(id, user.getID());
+        List<Tickets> tickets = ticketsService.getTickets(id, user.getID());
+        return ResponseHandler.modifyTickets(tickets);
     }
 
 }
