@@ -67,7 +67,7 @@ public class DataSeedRunnableRepository implements CommandLineRunner {
         List<UserRole> userRolesAgent = new ArrayList<>();
         UserRole agent = new UserRole();
         agent.setRoleName(Roles.ROLE_AGENT);
-        userRolesAgent.add(userRole);
+        userRolesAgent.add(agent);
 
         User userAgent = new User();
         userAgent.setPassword("1234");
