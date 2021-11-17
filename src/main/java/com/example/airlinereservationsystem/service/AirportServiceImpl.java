@@ -5,6 +5,7 @@ import com.example.airlinereservationsystem.repository.AirportRepository;
 import com.example.airlinereservationsystem.service.interfaces.AirportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,6 +22,7 @@ public class AirportServiceImpl implements AirportService {
     public List<Airport> getAllAirports() {
         return repository.findAll();
     }
+
 
     @Override
     public Airport getAirportByCode(String code) {
@@ -46,7 +48,6 @@ public class AirportServiceImpl implements AirportService {
         optionalAirport.get().setAddress(airport.getAddress());
         optionalAirport.get().setCode(airport.getCode());
         optionalAirport.get().setName(airport.getName());
-        repository.flush();
     }
 
     @Override
@@ -56,5 +57,10 @@ public class AirportServiceImpl implements AirportService {
             throw new IllegalStateException("Airport with given code does not exist (code: " + code+")");
         }
         repository.deleteByCode(code);
+    }
+
+    @Override
+    public Page<Airport> getAllAirportsPages(Pageable page) {
+        return repository.findAll(page);
     }
 }

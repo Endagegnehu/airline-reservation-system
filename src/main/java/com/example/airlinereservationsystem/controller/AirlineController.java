@@ -1,11 +1,15 @@
 package com.example.airlinereservationsystem.controller;
 
 import com.example.airlinereservationsystem.domain.Airline;
+import com.example.airlinereservationsystem.domain.Airport;
 import com.example.airlinereservationsystem.dto.AirlineDto;
 import com.example.airlinereservationsystem.service.interfaces.AirlineService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +26,19 @@ public class AirlineController {
     private final ModelMapper modelMapper;
 
     private int codeLength = 3;
+    private final String default_page_index ="0";
+    private final String default_page_size ="3";
 
     @GetMapping("/airlines")
+    public ResponseEntity<Page<Airline>> getAllAirportsPage(@RequestParam(defaultValue = default_page_index) int page,
+                                                            @RequestParam(defaultValue = default_page_size) int size){
+        Pageable paging = PageRequest.of(page, size);
+        log.info("get all airports");
+        return ResponseEntity.ok().body(AirLineService.getAllAirlinePages(paging));
+    }
+
+
+    @GetMapping("/airline")
     public ResponseEntity<List<Airline>> getAllAirports(){
         log.info("[INFO] get all airlines");
         return ResponseEntity.ok().body(AirLineService.getAllAirlines());

@@ -1,6 +1,9 @@
 package com.example.airlinereservationsystem.service.interfaces;
 
 import com.example.airlinereservationsystem.domain.Airline;
+import com.example.airlinereservationsystem.domain.Airport;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +16,6 @@ public interface AirlineService {
     void updateAirline(Airline airline);
 
     void deleteAirline(String code);
+
+    Page<Airline> getAllAirlinePages(Pageable page);
 }

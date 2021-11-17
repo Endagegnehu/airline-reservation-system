@@ -4,10 +4,10 @@ spring:
   application:
     name: airlineReservationSystem
   datasource:
-    url: jdbc:mysql://localhost:3306/reservation
-    username: root
-    password: superuser
-    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://localhost:5432/cs544
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
   jpa:
     show-sql: true
     hibernate:
@@ -17,4 +17,4 @@ spring:
       ddl-auto: create-drop
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect

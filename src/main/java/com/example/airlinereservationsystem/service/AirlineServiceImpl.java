@@ -5,6 +5,8 @@ import com.example.airlinereservationsystem.repository.AirlineRepository;
 import com.example.airlinereservationsystem.service.interfaces.AirlineService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -52,6 +54,11 @@ public class AirlineServiceImpl implements AirlineService {
             throw new IllegalStateException("Airline with given code does not exist (code: " + code +")");
         }
         repository.deleteByCode(code);
+    }
+
+    @Override
+    public Page<Airline> getAllAirlinePages(Pageable page) {
+        return repository.findAll(page);
     }
 
 }

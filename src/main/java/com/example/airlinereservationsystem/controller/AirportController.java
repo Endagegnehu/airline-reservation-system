@@ -12,6 +12,9 @@ import com.example.airlinereservationsystem.service.interfaces.FlightService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +31,25 @@ public class AirportController {
     private final AddressService addressService;
     private final ModelMapper modelMapper;
 
-    private int codeLength = 3;
+    private final int codeLength = 3;
+    private final String default_page_index ="0";
+    private final String default_page_size ="3";
 
-    @GetMapping("/airports")
+    @GetMapping("/airport")
     public ResponseEntity<List<Airport>> getAllAirports(){
         log.info("get all airports");
         return ResponseEntity.ok().body(airportService.getAllAirports());
     }
+
+    @GetMapping("/airports")
+    public ResponseEntity<Page<Airport>> getAllAirportsPage(@RequestParam(defaultValue = default_page_index) int page,
+                                                            @RequestParam(defaultValue = default_page_size) int size){
+        Pageable paging = PageRequest.of(page, size);
+        log.info("get all airports");
+        return ResponseEntity.ok().body(airportService.getAllAirportsPages(paging));
+    }
+
+
     @GetMapping("/airports/{code}")
     public ResponseEntity<Airport> getAirportByCode(@PathVariable String code){
         log.info("get airport by code {}", code);

@@ -51,7 +51,18 @@ public class AirlineReservationSystemApplication {
             airline.setName("MyAirlines");
             airline.setCode("M01");
 
+            Airline airline1 = new Airline(null,"AL1","Airline1","Airline1");
+            Airline airline2 = new Airline(null,"AL2","Airline2","Airline2");
+            Airline airline3 = new Airline(null,"AL3","Airline3","Airline3");
+            Airline airline4 = new Airline(null,"AL4","Airline4","Airline4");
+            Airline airline5 = new Airline(null,"AL5","Airline5","Airline5");
+
             airlineRepository.save(airline);
+            airlineRepository.save(airline1);
+            airlineRepository.save(airline2);
+            airlineRepository.save(airline3);
+            airlineRepository.save(airline4);
+            airlineRepository.save(airline5);
             airportRepository.save(airport);
 
         };
