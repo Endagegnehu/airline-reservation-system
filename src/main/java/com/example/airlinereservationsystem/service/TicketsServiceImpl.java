@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
 
-public class TicketsServiceImplementation implements TicketsService {
+public class TicketsServiceImpl implements TicketsService {
 	@Autowired
 	TicketsRepository ticketsRepository;
 	@Override

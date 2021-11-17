@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
-public class ReservationsServiceImplementation implements ReservationsService {
+public class ReservationsServiceImpl implements ReservationsService {
     @Autowired
     ReservationsRepository reservationsRepository;
 	@Override

@@ -10,7 +10,9 @@ import com.example.airlinereservationsystem.domain.Tickets;
 import java.util.List;
 
 public interface TicketsService {
+
     Tickets addTicket(Tickets ticket) ;
-    public List<Tickets> getTickets(Long reservationId, Long userId);
+
+    List<Tickets> getTickets(Long reservationId, Long userId);
 
 }

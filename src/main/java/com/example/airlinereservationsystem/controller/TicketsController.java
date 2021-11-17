@@ -5,7 +5,7 @@ import com.example.airlinereservationsystem.domain.Tickets;
 import com.example.airlinereservationsystem.domain.User;
 import com.example.airlinereservationsystem.dto.TicketsResponseDto;
 import com.example.airlinereservationsystem.service.interfaces.TicketsService;
-import com.example.airlinereservationsystem.service.TicketsServiceImplementation;
+import com.example.airlinereservationsystem.service.TicketsServiceImpl;
 import com.example.airlinereservationsystem.service.interfaces.UserService;
 import com.example.airlinereservationsystem.util.ResponseHandler;
 import com.example.airlinereservationsystem.util.security.JwtUtil;
@@ -28,16 +28,7 @@ public class TicketsController {
     private TicketsService ticketsService;
 
     @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
     private UserService userService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private TicketsServiceImplementation ticketsServiceImpl;
 
     @RequestMapping(value="/reservations/tickets/{id}", method = RequestMethod.GET)
     public  @ResponseBody

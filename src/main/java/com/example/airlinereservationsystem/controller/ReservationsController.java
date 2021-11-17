@@ -40,37 +40,31 @@ public class ReservationsController {
     @Autowired
     private FlightInstanceService flightinstanceService;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
 
     @PostMapping("/reservations")
     public  ResponseEntity<?> addReservation(@RequestBody ReservationsDto reservationsDto){
-        Reservations reservations = new Reservations();
+        Reservations reservation = new Reservations();
 
         // get passenger user
         final Optional<User> user = userService.findUserByID(reservationsDto.getUserId());
         user.orElseThrow(()-> new UsernameNotFoundException("No user found: "));
-        reservations.setUser(user.get());
+        reservation.setUser(user.get());
 
         // get a performer user
         UserAuth userAuth = new UserAuth();
         User performedUser = userAuth.getUserFromAuth(userService);
-        reservations.setPerformedUser(performedUser);
+        reservation.setPerformedUser(performedUser);
 
         long [] ids = reservationsDto.getFlightInstanceIds();
         List<FlightInstance > flightInstances = new ArrayList<>();
         for (int i = 0; i < ids.length; i++) {
             final Optional<FlightInstance> flightInstance = flightinstanceService.findById(ids[i]);
-            flightInstance.orElseThrow(() -> new UsernameNotFoundException("No reservation found: "));
+            flightInstance.orElseThrow(() -> new UsernameNotFoundException("No flight instance found: "));
             flightInstances.add(flightInstance.get());
         }
 
-        reservations.setFlightInstances(flightInstances);
-        Reservations response = reservationsService.addReservation(reservations);
+        reservation.setFlightInstances(flightInstances);
+        Reservations response = reservationsService.addReservation(reservation);
 
         // return response
         if ( response != null){
