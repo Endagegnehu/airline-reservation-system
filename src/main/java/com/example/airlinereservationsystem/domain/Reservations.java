@@ -27,7 +27,7 @@ public class Reservations {
     @ManyToOne()
     private User performedUser;
 
-    @OneToMany ()
+    @ManyToMany ()
     private List<FlightInstance> flightInstances = new ArrayList<>();
 
     @PrePersist
