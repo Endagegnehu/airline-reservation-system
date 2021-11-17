@@ -20,8 +20,8 @@ public class TicketsServiceImplementation implements TicketsService {
 	}
 
 	@Override
-	public List<Tickets> getATicket(Long reservationId) {
-		return ticketsRepository.getATicket(reservationId);
+	public List<Tickets> getTickets(Long reservationId, Long userId) {
+		return ticketsRepository.getTickets(reservationId, userId);
 	}
 
 }

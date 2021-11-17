@@ -19,7 +19,7 @@ import java.util.List;
 public interface TicketsRepository  extends CrudRepository <Tickets, Integer>{
 
 
-    @Query("SELECT distinct  t FROM Tickets t WHERE  t.reservation.ID = :id")
-    public List<Tickets> getATicket(@Param("id") long id);
+    @Query("SELECT distinct  t FROM Tickets t WHERE  t.reservation.ID = :id AND ( t.reservation.user.ID = :userId OR  t.reservation.performedUser.ID = :userId)")
+    public List<Tickets> getTickets(@Param("id") long id, @Param("userId") long userId);
 
 }

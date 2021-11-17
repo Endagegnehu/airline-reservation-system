@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional
 public interface TicketsService {
     Tickets addTicket(Tickets ticket) ;
-    public List<Tickets> getATicket(Long reservationId);
+    public List<Tickets> getTickets(Long reservationId, Long userId);
 
 
 }
