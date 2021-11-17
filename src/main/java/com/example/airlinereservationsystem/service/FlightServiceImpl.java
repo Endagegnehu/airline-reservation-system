@@ -66,12 +66,9 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public List<Flight> findSomeByAirports(String departure, String destination) {
-        List<Flight> flights = flightRespository.findAll()
-                .stream()
-                .filter(flight -> flight.getDepartureAirport().getCode().equals(departure))
-                .filter(flight -> flight.getArrivalAirport().getCode().equals(destination))
-                .collect(Collectors.toList());
+    public List<Flight> findAllByAirports(String departure, String destination) {
+
+        List<Flight> flights = flightRespository.findAllByAirports(departure, destination);
 
         if (flights.isEmpty())
             throw new ResourceNotFoundException("Flight with the departure " + departure + " and destination " + destination + " not found");
@@ -80,18 +77,18 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public List<Flight> findSomeByAirlineCode(String code) {
-        List<Flight> flights = flightRespository.findAll()
-                .stream()
-                .filter(flight -> flight.getAirline().getCode().equals(code))
-                .collect(Collectors.toList());
+    public List<Flight> findAllByAirlineCode(String code) {
+
+        List<Flight> flights = flightRespository.findAllByAirlineCode(code);
+
         if (flights.isEmpty())
             throw new ResourceNotFoundException("Flight with airline code " + code + " not found");
+
         return flights;
     }
 
     @Override
-    public Flight updateFlightProperty(Long id, FlightDto flightDto) {
+    public Flight updateFlight(Long id, FlightDto flightDto) {
         Flight flight = flightRespository.findById(id).orElseThrow(() -> new ResourceNotFoundException("flight with id " + id + " not found for update"));
         Airline airline = airlineService.getAirlineById(flightDto.getAirline());
         Airport arrivalAirport = airportService.getById(flightDto.getArrivalAirport());
@@ -115,22 +112,24 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public Flight getOneFlightByAirlineCode(String code) {
-        return flightRespository.findAll()
-                                .stream()
-                                .filter(flight -> flight.getAirline().getCode().equals(code))
-                                .findFirst()
-                                .orElseThrow(() -> new ResourceNotFoundException("Flight with airline code " + code + " not found"));
+    public List<Flight> findAllByDepartureAirportCodeAndAirlineCode(String airlineCode, String airportCode){
+
+        List<Flight> flights =  flightRespository.findAllByDepartureAirportCodeAndAirlineCode(airlineCode,airportCode);
+
+        if (flights.isEmpty())
+            throw new ResourceNotFoundException("Flights with Departure airport/airline with code " + airportCode +"/" + airlineCode + " not found");
+
+        return flights;
     }
 
     @Override
-    public List<Flight> getOneFlightByDepartureAirportCode(String code){
-        List<Flight> flights =  flightRespository.findAll()
-                .stream()
-                .filter(flight -> flight.getDepartureAirport().getCode().equals(code))
-                .collect(Collectors.toList());
+    public List<Flight> getAllFlightByDepartureAirportCode(String code){
+
+        List<Flight> flights =  flightRespository.getAllFlightByDepartureAirportCode(code);
+
         if (flights.isEmpty())
-            throw new ResourceNotFoundException("Departure airport with code " + code + " not found");
+            throw new ResourceNotFoundException("Flights with Departure airport with code " + code + " not found");
+
         return flights;
     }
 

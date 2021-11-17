@@ -39,21 +39,30 @@ public class FlightController {
 
     @GetMapping(value = "/flights", params = {"dep", "dest"})
     @ResponseBody
-    public ResponseEntity<?> findSomeByAirports(@RequestParam(name = "dep", required = false) String departureAirport,
+    public ResponseEntity<?> findAllByAirports(@RequestParam(name = "dep", required = false) String departureAirport,
                                                 @RequestParam(name = "dest", required = false) String destinationAirport) {
 
         return ResponseHandler
-                .respond("Success", HttpStatus.OK, flightService.findSomeByAirports(departureAirport, destinationAirport));
+                .respond("Success", HttpStatus.OK, flightService.findAllByAirports(departureAirport, destinationAirport));
+    }
+
+    @GetMapping(value = "/flights", params = {"airport", "airline"})
+    @ResponseBody
+    public ResponseEntity<?> findAllByAirportAndAirline(@RequestParam(name = "airport", required = false) String departureAirport,
+                                               @RequestParam(name = "airline", required = false) String destinationAirport) {
+
+        return ResponseHandler
+                .respond("Success", HttpStatus.OK, flightService.findAllByDepartureAirportCodeAndAirlineCode(departureAirport, destinationAirport));
     }
 
     @GetMapping(value = "/flights/airline/{code}")
     @ResponseBody
-    public ResponseEntity<?> findSomeByAirline(@PathVariable String code) {
+    public ResponseEntity<?> findAllByAirline(@PathVariable String code) {
         return ResponseHandler
-                .respond("Success", HttpStatus.OK, flightService.findSomeByAirlineCode(code));
+                .respond("Success", HttpStatus.OK, flightService.findAllByAirlineCode(code));
     }
 
-    @PostMapping(path = "/admin/flights", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/admin/flights", consumes = "application/json")
     public ResponseEntity<?> addFlight(@RequestBody FlightDto flightDto) {
         Flight flight = flightService.addFlight(flightDto);
         if (flight != null) {
@@ -65,7 +74,7 @@ public class FlightController {
 
     @PutMapping(path = "/admin/flights/{id}", consumes = "application/json")
     public ResponseEntity<?> updateFlight(@PathVariable Long id, @RequestBody FlightDto flightDto) {
-        Flight flight = flightService.updateFlightProperty(id, flightDto);
+        Flight flight = flightService.updateFlight(id, flightDto);
         return ResponseHandler.respond("Successfully updated a flight!", HttpStatus.ACCEPTED, flight);
     }
 

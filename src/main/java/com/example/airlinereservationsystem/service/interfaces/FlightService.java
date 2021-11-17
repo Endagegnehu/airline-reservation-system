@@ -12,10 +12,11 @@ public interface FlightService {
     Page<Flight> findAll(Pageable pageable);
     Flight findById(Long id);
     Flight addFlight(FlightDto flightDto);
-    List<Flight> findSomeByAirports(String departure, String destination);
-    Flight updateFlightProperty(Long id, FlightDto flightDto);
+    List<Flight> findAllByAirports(String departure, String destination);
+    Flight updateFlight(Long id, FlightDto flightDto);
     void removeFlight(Long id);
-    Flight getOneFlightByAirlineCode(String code);
-    List<Flight> getOneFlightByDepartureAirportCode(String code);
-    List<Flight> findSomeByAirlineCode(String code);
+    List<Flight> getAllFlightByDepartureAirportCode(String code);
+    List<Flight> findAllByAirlineCode(String code);
+    List<Flight> findAllByDepartureAirportCodeAndAirlineCode(String airlineCode, String airportCode);
+
 }
