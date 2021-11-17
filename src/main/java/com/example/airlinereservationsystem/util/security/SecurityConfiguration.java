@@ -3,6 +3,7 @@ package com.example.airlinereservationsystem.util.security;
 import com.example.airlinereservationsystem.util.constant.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -63,11 +64,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/airports/{airportCode}/*").permitAll()
                 .antMatchers("/airports/*", "/airlines/*").permitAll()
                 .antMatchers("/user").hasAnyAuthority(Roles.ROLE_USER.toString())
-                .antMatchers("/reservations").permitAll()
-                .antMatchers("/reservations/confirm").permitAll()
-                .antMatchers("/reservations/get/{id}").permitAll()
-                .antMatchers("/reservations/ticket/{id}").permitAll()
-                .antMatchers("/reservations/delete/{id}").permitAll()
+
+                .antMatchers(HttpMethod.POST, "/reservations").hasAnyAuthority(Roles.ROLE_AGENT.toString(), Roles.ROLE_USER.toString() )
+                .antMatchers(HttpMethod.POST, "/reservations/confirm").hasAnyAuthority(Roles.ROLE_AGENT.toString(), Roles.ROLE_USER.toString() )
+                .antMatchers(HttpMethod.GET, "/reservations/").hasAnyAuthority(Roles.ROLE_AGENT.toString(), Roles.ROLE_USER.toString() )
+                .antMatchers(HttpMethod.GET,"/reservations/{id}").hasAnyAuthority(Roles.ROLE_AGENT.toString(), Roles.ROLE_USER.toString() )
+                .antMatchers(HttpMethod.DELETE,"/reservations/{id}").hasAnyAuthority(Roles.ROLE_AGENT.toString(), Roles.ROLE_USER.toString() )
+                .antMatchers(HttpMethod.GET,"/reservations/tickets/{id}").hasAnyAuthority(Roles.ROLE_AGENT.toString(), Roles.ROLE_USER.toString() )
+
                 .antMatchers("/airports", "/airlines").hasAnyAuthority(Roles.ROLE_USER.toString()).
                 antMatchers("/airports", "/airlines","/airlines/{code}").permitAll().
                 antMatchers("/login").permitAll().

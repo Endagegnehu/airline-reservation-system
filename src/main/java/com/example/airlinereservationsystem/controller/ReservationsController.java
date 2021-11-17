@@ -13,6 +13,7 @@ import com.example.airlinereservationsystem.service.interfaces.TicketsService;
 import com.example.airlinereservationsystem.service.interfaces.UserService;
 import com.example.airlinereservationsystem.util.ResponseHandler;
 import com.example.airlinereservationsystem.util.security.JwtUtil;
+import com.example.airlinereservationsystem.util.constant.Roles;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,13 +58,16 @@ public class ReservationsController {
     public  ResponseEntity<?> addReservation(@RequestBody ReservationsDto reservationsDto){
 
         Reservations reservations = new Reservations();
-
         // get passanger user
         final Optional<User> user = userService.findUserByID(reservationsDto.getUserId());
         user.orElseThrow(()-> new UsernameNotFoundException("No user found: "));
         reservations.setUser(user.get());
 
-        // get performed action user
+        // get a performer user
+        User performedUser = getUserFromAuth();
+        reservations.setPerformedUser(performedUser);
+
+
         long [] ids = reservationsDto.getFlightInstanceIds();
         List<FlightInstance > flightInstances = new ArrayList<>();
         for (int i = 0; i < ids.length; i++) {
@@ -80,11 +87,19 @@ public class ReservationsController {
 
     @PostMapping("/reservations/confirm")
     public  ResponseEntity<?> confirmReservations(@RequestBody ConfirmationDto confirmationDto){
+        // check if that reservation exists
         final Optional<Reservations> reservation = reservationsService.findReservationsByID(confirmationDto.getReservationId());
         reservation.orElseThrow(()-> new UsernameNotFoundException("No reservation found: "));
         Reservations reservationObj = reservation.get();
+
+        // check if the reservation performerId belongs to that user
+        User user = getUserFromAuth();
+        if(user.getID() != reservationObj.getPerformedUser().getID())
+            return  ResponseHandler.respond("Can't perform that action", HttpStatus.FORBIDDEN);
+
+        // fetch flight instances for that reservation
         List<FlightInstance> list = reservationObj.getFlightInstances();
-        //TicketsDto finResponse = new TicketsDto();
+
         List<Tickets>  ticketsResponse = new ArrayList<>();
 
         for(int i = 0; i < list.size(); i++) {
@@ -125,20 +140,23 @@ public class ReservationsController {
     }
 
     @RequestMapping(value="reservations", method = RequestMethod.GET)
-    public @ResponseBody List<Reservations> getReservations(@RequestParam("userId") long userId){
-        return reservationsService.getAllByUserId(userId);
+    public @ResponseBody List<Reservations> getReservations(){
+        User user = getUserFromAuth();
+        return reservationsService.getAllByUserId(user.getID());
     }
 
     @RequestMapping(value="/reservations/{id}", method = RequestMethod.GET)
-    public  @ResponseBody Reservations getAReservationByUserId(@PathVariable Long id,  @RequestParam("userId") long userId){
-       return reservationsService.getAReservationByUserId(id, userId);
+    public  @ResponseBody Reservations getAReservationByUserId(@PathVariable Long id){
+        User user = getUserFromAuth();
+        return reservationsService.getAReservationByUserId(id, user.getID());
     }
     @RequestMapping(value="/reservations/tickets/{id}", method = RequestMethod.GET)
-    public  @ResponseBody List<Tickets> getAReservationByUserId(@PathVariable Long id){
-        return ticketsService.getATicket(id);
+    public  @ResponseBody List<Tickets> getTickets(@PathVariable Long id){
+        User user = getUserFromAuth();
+        return ticketsService.getTickets(id, user.getID());
     }
 
-    @DeleteMapping(path="/reservations{id}")
+    @DeleteMapping(path="/reservations/{id}")
     public ResponseEntity<?> deleteReservation(@PathVariable long id){
         final Optional<Reservations> reservation = reservationsService.findReservationsByID(id);
         if (reservation.isEmpty()){
@@ -146,6 +164,14 @@ public class ReservationsController {
         }
         reservationsService.deleteReservation(id);
         return ResponseEntity.ok().body("Reservation with code : " + id + " was deleted");
+    }
+
+    public User getUserFromAuth(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+        final Optional<User> user = userService.findUserByUsername(userName);
+        user.orElseThrow(()-> new UsernameNotFoundException("No user found: "));
+        return user.get();
     }
 }
     

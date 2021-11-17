@@ -19,12 +19,11 @@ public interface ReservationsRepository extends CrudRepository <Reservations, In
 
     Optional<Reservations> findByID(long id);
 
-    @Query("SELECT r FROM Reservations r WHERE r.user.ID = :userId")
+    @Query("SELECT r FROM Reservations r WHERE r.user.ID = :userId OR r.performedUser.ID = :userId")
     public List<Reservations> getAllByUserId(@Param("userId") long userId);
 
-    @Query("SELECT r FROM Reservations r WHERE  r.user.ID = :userId AND r.ID = :id")
+    @Query("SELECT r FROM Reservations r WHERE  (r.user.ID = :userId OR r.performedUser.ID = :userId) AND r.ID = :id")
     public Reservations getAReservationByUserId(@Param("id") long id, @Param("userId") long userId);
-
 
     void deleteByID(long id);
 
