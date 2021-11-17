@@ -43,6 +43,17 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
     }
 
     @Override
+    public  FlightInstance findOnePerFlight(Long id, Long instanceId) {
+        return instanceRepository.findAll()
+                .stream()
+                .filter(instance -> instance.getFlight().getId().equals(id))
+                .filter(instance -> instance.getId().equals(instanceId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("No isntnaces found"));
+
+    }
+
+    @Override
     public Page<FlightInstance> findAllBetweenTwoDestinationsOnADate(String departureAirport, String arrivalAirport, LocalDate date, Pageable pageable) {
         return instanceRepository.findAllBetweenTwoDestinationsOnADate(departureAirport, arrivalAirport, date, pageable);
     }
@@ -66,5 +77,12 @@ public class FlightInstanceServiceImpl implements FlightInstanceService {
         flightInstance = instanceRepository.save(flightInstance);
 
         return flightInstance;
+    }
+
+    @Override
+    public void removeInstance(Long id){
+        FlightInstance instance = instanceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Flight instance with id " + id + " not found"));
+        instanceRepository.delete(instance);
     }
 }
