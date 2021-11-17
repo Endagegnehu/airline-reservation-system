@@ -27,14 +27,18 @@ import java.util.*;
 public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired
     private UserService userService;
 
-    @Autowired
     private ModelMapper modelMapper;
 
+    private JwtUtil jwtUtil;
+
     @Autowired
-    JwtUtil jwtUtil;
+    public UserController(UserService userService, ModelMapper modelMapper, JwtUtil jwtUtil){
+        this.userService = userService;
+        this.modelMapper = modelMapper;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Qualifier("encoder")
     @Autowired
