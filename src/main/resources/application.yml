@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/Airline_Reservation_System?createDatabaseIfNotExist=true
     username: root
-    password: basma123
+    password: superuser
     driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
