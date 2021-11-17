@@ -9,11 +9,8 @@ import com.example.airlinereservationsystem.domain.Tickets;
 
 import java.util.List;
 
-@Service
-@Transactional
 public interface TicketsService {
     Tickets addTicket(Tickets ticket) ;
     public List<Tickets> getTickets(Long reservationId, Long userId);
-
 
 }

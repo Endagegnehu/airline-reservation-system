@@ -6,10 +6,14 @@ import org.springframework.stereotype.Service;
 
 import com.example.airlinereservationsystem.domain.Tickets;
 import com.example.airlinereservationsystem.repository.TicketsRepository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
+
 public class TicketsServiceImplementation implements TicketsService {
 	@Autowired
 	TicketsRepository ticketsRepository;

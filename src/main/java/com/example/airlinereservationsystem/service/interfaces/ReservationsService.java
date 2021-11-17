@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.airlinereservationsystem.domain.Reservations;
 import com.example.airlinereservationsystem.domain.User;
-@Service
+
 public interface ReservationsService {
       Reservations addReservation(Reservations reservation) ;
       Optional<Reservations> findReservationsByID(long id);
@@ -20,6 +20,5 @@ public interface ReservationsService {
       public Reservations getAReservationByUserId(Long id,  long userId);
       void deleteReservation(long id);
       List<Reservations> getAllReservation();
-	
 
 }
