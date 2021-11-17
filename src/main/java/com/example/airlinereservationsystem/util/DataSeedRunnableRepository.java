@@ -91,7 +91,7 @@ public class DataSeedRunnableRepository implements CommandLineRunner {
         /* Flight Instances */
         // For flight0
         List<FlightInstance> flightInstances = new ArrayList<>();
-        flightInstances.add(new FlightInstance(LocalDate.of(2020, 06, 8), LocalDate.of(2020, 06, 9), flights.get(0)));
+        flightInstances.add(new FlightInstance(LocalDate.of(2021, 11, 18), LocalDate.of(2020, 06, 9), flights.get(0)));
         flightInstances.add( new FlightInstance(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 1, 2), flights.get(0)));
         flightInstances.add( new FlightInstance(LocalDate.of(2020, 6, 8), LocalDate.of(2020, 6, 8), flights.get(0)));
         flightInstances.add( new FlightInstance(LocalDate.of(2020, 9, 20), LocalDate.of(2020, 9, 21), flights.get(0)));

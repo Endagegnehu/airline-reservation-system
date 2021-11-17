@@ -20,8 +20,16 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+  ## ActiveMQ config
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+    packages:
+      trust-all: true
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+
 

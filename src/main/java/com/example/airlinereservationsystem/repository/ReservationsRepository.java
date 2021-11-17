@@ -2,7 +2,7 @@ package com.example.airlinereservationsystem.repository;
 
 import com.example.airlinereservationsystem.domain.Flight;
 import com.example.airlinereservationsystem.domain.Reservations;
-
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Repository
 @Transactional(propagation = Propagation.REQUIRED)
-public interface ReservationsRepository extends CrudRepository <Reservations, Integer> {
+public interface ReservationsRepository extends CrudRepository <Reservations, Integer>, JpaSpecificationExecutor<Reservations> {
 
     Optional<Reservations> findByID(long id);
 
@@ -26,5 +26,8 @@ public interface ReservationsRepository extends CrudRepository <Reservations, In
     public Reservations getAReservationByUserId(@Param("id") long id, @Param("userId") long userId);
 
     void deleteByID(long id);
+
+    @Query("FROM Reservations r")
+     List<Reservations> getAllReservation();
 
 }

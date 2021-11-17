@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
+
 public class AirlineReservationSystemApplication {
 
     public static void main(String[] args) {

@@ -32,6 +32,7 @@ public class ReservationsServiceImplementation implements ReservationsService {
 
 	@Override
 	public Reservations getAReservationByUserId(Long id, long userId) {
+
 		return reservationsRepository.getAReservationByUserId(id, userId);
 	}
 
@@ -40,4 +41,8 @@ public class ReservationsServiceImplementation implements ReservationsService {
 		reservationsRepository.deleteByID(id);
 	}
 
+	@Override
+	public List<Reservations> getAllReservation() {
+		return  reservationsRepository.getAllReservation();
+	}
 }

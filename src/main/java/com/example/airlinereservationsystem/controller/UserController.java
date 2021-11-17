@@ -45,7 +45,6 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
-        scheduledTasks.reportCurrentTime();
         return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
