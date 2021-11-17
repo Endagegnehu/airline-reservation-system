@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -14,17 +16,21 @@ import java.time.LocalTime;
 @Data
 @NoArgsConstructor
 @Entity
+@RequiredArgsConstructor
 public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NonNull
     @Column(name = "flight_number")
     private Long number;
 
+    @NonNull
     @Column(name = "number_of_seats")
     private Integer numberOfSeats;
 
+    @NonNull
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "airline_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -32,6 +38,7 @@ public class Flight {
     @JsonIdentityReference(alwaysAsId = true)
     private Airline airline;
 
+    @NonNull
     @ManyToOne(cascade = CascadeType.PERSIST)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "departure_airport_id")
@@ -39,6 +46,7 @@ public class Flight {
     @JsonIdentityReference(alwaysAsId = true)
     private Airport departureAirport;
 
+    @NonNull
     @ManyToOne(cascade = CascadeType.PERSIST)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "arrival_airport_id")
@@ -46,19 +54,12 @@ public class Flight {
     @JsonIdentityReference(alwaysAsId = true)
     private Airport arrivalAirport;
 
+    @NonNull
     @Column(name = "departure_time")
     private LocalTime departureTime;
 
+    @NonNull
     @Column(name = "arrival_time")
     private LocalTime arrivalTime;
 
-    public Flight(Long number, Integer numberOfSeats, Airline dummyAirline, Airport departureAirport, Airport arrivalAirport, LocalTime departureTime, LocalTime arrivalTime) {
-        this.number = number;
-        this.numberOfSeats = numberOfSeats;
-        this.airline = dummyAirline;
-        this.departureAirport = departureAirport;
-        this.arrivalAirport = arrivalAirport;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
-    }
 }
