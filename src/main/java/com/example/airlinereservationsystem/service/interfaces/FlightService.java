@@ -9,12 +9,13 @@ import java.util.List;
 
 public interface FlightService {
     List<Flight> findAll();
-
     Page<Flight> findAll(Pageable pageable);
     Flight findById(Long id);
     Flight addFlight(FlightDto flightDto);
     List<Flight> findSomeByAirports(String departure, String destination);
     Flight updateFlightProperty(Long id, FlightDto flightDto);
-    boolean removeFlight(Long id);
-    List<Flight> getFlightByAirlineCode(String code);
+    void removeFlight(Long id);
+    Flight getOneFlightByAirlineCode(String code);
+    List<Flight> getOneFlightByDepartureAirportCode(String code);
+    List<Flight> findSomeByAirlineCode(String code);
 }

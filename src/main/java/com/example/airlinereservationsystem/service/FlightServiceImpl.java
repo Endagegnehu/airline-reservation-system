@@ -7,7 +7,6 @@ import com.example.airlinereservationsystem.repository.FlightRespository;
 import com.example.airlinereservationsystem.service.interfaces.AirlineService;
 import com.example.airlinereservationsystem.service.interfaces.AirportService;
 import com.example.airlinereservationsystem.service.interfaces.FlightService;
-import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,8 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
@@ -47,7 +45,9 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public Flight findById(Long id) {
-        return flightRespository.findById(id).orElseThrow(() ->new ResourceNotFoundException( "Flight with id " + id + " not found"));
+        return flightRespository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Flight with id " + id + " not found"));
     }
 
     @Override
@@ -55,40 +55,47 @@ public class FlightServiceImpl implements FlightService {
         Airline airline = airlineService.getAirlineById(flightDto.getAirline());
         Airport departureAirport = airportService.getById(flightDto.getDepartureAirport());
         Airport arrivalAirport = airportService.getById(flightDto.getArrivalAirport());
-        if (airline != null && departureAirport != null && arrivalAirport != null ) {
-            Flight flight = modelMapper.map(flightDto, Flight.class);
-            flight.setAirline(airline);
-            flight.setArrivalAirport(arrivalAirport);
-            flight.setDepartureAirport(departureAirport);
-            return flightRespository.save(flight);
-        } else {
-             throw new ResourceNotFoundException( "child entities are not found to create a flight");
-        }
+        Flight flight = modelMapper.map(flightDto, Flight.class);
+        flight.setAirline(airline);
+        flight.setArrivalAirport(arrivalAirport);
+        flight.setDepartureAirport(departureAirport);
+        return flightRespository.save(flight);
     }
 
     @Override
     public List<Flight> findSomeByAirports(String departure, String destination) {
-        return flightRespository.findSomeByAirports(departure, destination);
+        List<Flight> flights = flightRespository.findAll()
+                .stream()
+                .filter(flight -> flight.getDepartureAirport().getCode().equals(departure))
+                .filter(flight -> flight.getArrivalAirport().getCode().equals(destination))
+                .collect(Collectors.toList());
+
+        if (flights.isEmpty())
+            throw new ResourceNotFoundException("Flight with the departure " + departure + " and destination " + destination + " not found");
+
+        return flights;
+    }
+
+    @Override
+    public List<Flight> findSomeByAirlineCode(String code) {
+        List<Flight> flights = flightRespository.findAll()
+                .stream()
+                .filter(flight -> flight.getAirline().getCode().equals(code))
+                .collect(Collectors.toList());
+        if (flights.isEmpty())
+            throw new ResourceNotFoundException("Flight with airline code " + code + " not found");
+        return flights;
     }
 
     @Override
     public Flight updateFlightProperty(Long id, FlightDto flightDto) {
-        Flight flight  = flightRespository.findById(id).orElseThrow(()->new ResourceNotFoundException("flight with id " + id + " not found for update"));
-        Airline airline = flightDto.getAirline() != null ?  airlineService.getAirlineById(flightDto.getAirline()) : null;
-        Airport departureAirport = flightDto.getDepartureAirport() != null ? airportService.getById(flightDto.getDepartureAirport()) : null;
-        Airport arrivalAirport = flightDto.getArrivalAirport() != null ?  airportService.getById(flightDto.getArrivalAirport()) : null;
+        Flight flight = flightRespository.findById(id).orElseThrow(() -> new ResourceNotFoundException("flight with id " + id + " not found for update"));
+        Airline airline = airlineService.getAirlineById(flightDto.getAirline());
+        Airport arrivalAirport = airportService.getById(flightDto.getArrivalAirport());
+        Airport departureAirport = airportService.getById(flightDto.getDepartureAirport());
 
-        boolean nonNull = Stream.of(flightDto.getNumber(),flightDto.getNumberOfSeats(), flightDto.getAirline(),
-                        flightDto.getDepartureAirport(), flightDto.getArrivalAirport(),
-                        flightDto.getDepartureTime(), flightDto.getArrivalTime())
-                        .allMatch(Objects::nonNull);
-
-        if (!nonNull)
-            throw new ResourceNotFoundException("Null entities found");
-
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
-        mapper.map(flightDto, flight);
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        modelMapper.map(flightDto, flight);
         flight.setAirline(airline);
         flight.setDepartureAirport(departureAirport);
         flight.setArrivalAirport(arrivalAirport);
@@ -97,18 +104,31 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public boolean removeFlight(Long id) {
-        boolean isFound = flightRespository.existsById(id);
-        if (isFound){
-            flightRespository.deleteById(id);
-            return isFound;
-        }else{
-            throw new ResourceNotFoundException("flight with id " + id + " not found for deletion");
-        }
+    public void removeFlight(Long id) {
+        Flight flight = flightRespository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("flight with id " + id + " not found for deletion"));
+
+        flightRespository.delete(flight);
     }
 
     @Override
-    public List<Flight> getFlightByAirlineCode(String code) {
-        return flightRespository.getFlightByAirlineCode(code);
+    public Flight getOneFlightByAirlineCode(String code) {
+        return flightRespository.findAll()
+                                .stream()
+                                .filter(flight -> flight.getAirline().getCode().equals(code))
+                                .findFirst()
+                                .orElseThrow(() -> new ResourceNotFoundException("Flight with airline code " + code + " not found"));
     }
+
+    @Override
+    public List<Flight> getOneFlightByDepartureAirportCode(String code){
+        List<Flight> flights =  flightRespository.findAll()
+                .stream()
+                .filter(flight -> flight.getDepartureAirport().getCode().equals(code))
+                .collect(Collectors.toList());
+        if (flights.isEmpty())
+            throw new ResourceNotFoundException("Departure airport with code " + code + " not found");
+        return flights;
+    }
+
 }
