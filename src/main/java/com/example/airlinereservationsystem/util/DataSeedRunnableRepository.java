@@ -63,6 +63,22 @@ public class DataSeedRunnableRepository implements CommandLineRunner {
         user.setResidenceAddress(address);
         user.setUsername("admin");
 
+        // Agent user
+        List<UserRole> userRolesAgent = new ArrayList<>();
+        UserRole agent = new UserRole();
+        agent.setRoleName(Roles.ROLE_AGENT);
+        userRolesAgent.add(agent);
+
+        User userAgent = new User();
+        userAgent.setPassword("1234");
+        userAgent.setRole(userRolesAgent);
+        userAgent.setDataOfBirth("23/09/1995");
+        userAgent.setEmail("muna@gmail.com");
+        userAgent.setFirstName("Muna");
+        userAgent.setLastName("Jamal");
+        userAgent.setResidenceAddress(address);
+        userAgent.setUsername("muna");
+
         /* Flights */
         List<Flight> flights = new ArrayList<>();
         flights.add( new Flight(120012L, 66, new Airline("AL-1", "Airline-name-1"), new Airport("AP1", "airport-1"), new Airport("AP14", "airport-6"), LocalTime.of(12,00,00),LocalTime.of(12,00,00 )));
@@ -92,6 +108,7 @@ public class DataSeedRunnableRepository implements CommandLineRunner {
 
 
         userService.signup(user);
+        userService.signup(userAgent);
         flightRespository.saveAll(flights);
         flightInstanceRepository.saveAll(flightInstances);
     }

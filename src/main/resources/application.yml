@@ -3,6 +3,7 @@ server:
 spring:
   application:
     name: airlineReservationSystem
+
   datasource:
     url: jdbc:mysql://localhost:3306/Airline_Reservation_System?createDatabaseIfNotExist=true
     username: root
@@ -19,3 +20,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
