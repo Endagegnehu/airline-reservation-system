@@ -1,5 +1,6 @@
 package com.example.airlinereservationsystem;
 
+import com.example.airlinereservationsystem.service.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,4 +17,5 @@ public class AirlineReservationSystemApplication {
     public ModelMapper modelMapper(){
         return new ModelMapper();
     }
+
 }

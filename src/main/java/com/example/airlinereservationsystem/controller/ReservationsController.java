@@ -3,28 +3,21 @@ package com.example.airlinereservationsystem.controller;
 
 import com.example.airlinereservationsystem.domain.*;
 import com.example.airlinereservationsystem.dto.ConfirmationDto;
-import com.example.airlinereservationsystem.dto.FlightDto;
 import com.example.airlinereservationsystem.dto.ReservationsDto;
-import com.example.airlinereservationsystem.dto.TicketsDto;
 import com.example.airlinereservationsystem.service.interfaces.FlightInstanceService;
 import com.example.airlinereservationsystem.service.interfaces.ReservationsService;
-import com.example.airlinereservationsystem.service.ReservationsServiceImplementation;
 import com.example.airlinereservationsystem.service.interfaces.TicketsService;
 import com.example.airlinereservationsystem.service.interfaces.UserService;
+import com.example.airlinereservationsystem.util.DataHandler;
 import com.example.airlinereservationsystem.util.ResponseHandler;
 import com.example.airlinereservationsystem.util.security.JwtUtil;
-import com.example.airlinereservationsystem.util.constant.Roles;
+import com.example.airlinereservationsystem.util.security.UserAuth;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,39 +27,39 @@ import java.util.*;
 @RequestMapping
 public class ReservationsController {
     Logger logger = LoggerFactory.getLogger(TicketsController.class);
-    @Autowired
-    ReservationsService reservationsService;
-    @Autowired
-    UserService userService;
-    @Autowired
-    TicketsService ticketsService;
 
     @Autowired
-    FlightInstanceService flightinstanceService;
+    private ReservationsService reservationsService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private TicketsService ticketsService;
+
+    @Autowired
+    private FlightInstanceService flightinstanceService;
+
     @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
-    JwtUtil jwtUtil;
-
-    @Autowired
-    ReservationsServiceImplementation reservationsServiceImpl;
-
+    private JwtUtil jwtUtil;
 
 
     @PostMapping("/reservations")
     public  ResponseEntity<?> addReservation(@RequestBody ReservationsDto reservationsDto){
-
         Reservations reservations = new Reservations();
-        // get passanger user
+
+        // get passenger user
         final Optional<User> user = userService.findUserByID(reservationsDto.getUserId());
         user.orElseThrow(()-> new UsernameNotFoundException("No user found: "));
         reservations.setUser(user.get());
 
         // get a performer user
-        User performedUser = getUserFromAuth();
+        UserAuth userAuth = new UserAuth();
+        User performedUser = userAuth.getUserFromAuth(userService);
         reservations.setPerformedUser(performedUser);
-
 
         long [] ids = reservationsDto.getFlightInstanceIds();
         List<FlightInstance > flightInstances = new ArrayList<>();
@@ -75,11 +68,13 @@ public class ReservationsController {
             flightInstance.orElseThrow(() -> new UsernameNotFoundException("No reservation found: "));
             flightInstances.add(flightInstance.get());
         }
-       reservations.setFlightInstances(flightInstances);
 
-        Reservations respone = reservationsService.addReservation(reservations);
-        if ( respone != null){
-            return  ResponseHandler.respond("Successfully added a reservation!", HttpStatus.OK, respone);
+        reservations.setFlightInstances(flightInstances);
+        Reservations response = reservationsService.addReservation(reservations);
+
+        // return response
+        if ( response != null){
+            return  ResponseHandler.respond("Successfully added a reservation!", HttpStatus.OK, response);
         } else {
             return  ResponseHandler.respond("Null entities found", HttpStatus.BAD_REQUEST);
         }
@@ -93,23 +88,24 @@ public class ReservationsController {
         Reservations reservationObj = reservation.get();
 
         // check if the reservation performerId belongs to that user
-        User user = getUserFromAuth();
+        UserAuth userAuth = new UserAuth();
+        User user = userAuth.getUserFromAuth(userService);
         if(user.getID() != reservationObj.getPerformedUser().getID())
             return  ResponseHandler.respond("Can't perform that action", HttpStatus.FORBIDDEN);
 
         // fetch flight instances for that reservation
         List<FlightInstance> list = reservationObj.getFlightInstances();
-
         List<Tickets>  ticketsResponse = new ArrayList<>();
-
+        DataHandler handler = new DataHandler();
         for(int i = 0; i < list.size(); i++) {
             Tickets ticket = new Tickets();
             ticket.setReservation(reservationObj);
-            ticket.setNumber(genrateRandomString("numeric"));
-            ticket.setReservationCode(genrateRandomString("alpha"));
+            ticket.setNumber(handler.generateRandomString("numeric"));
+            ticket.setReservationCode(handler.generateRandomString("alpha"));
             ticketsResponse.add( ticketsService.addTicket(ticket));
         }
-        //finResponse.setTickets(ticketsResponse);
+
+        // return response
         if ( ticketsResponse.size() != 0 ){
             return  ResponseHandler.respond("Successfully added a ticket!", HttpStatus.OK);
         } else {
@@ -118,41 +114,19 @@ public class ReservationsController {
 
     }
 
-    public static String genrateRandomString(String type) {
-        String SALTCHARS = "";
-        int size  = 0;
-        if(type.equals("alpha")){
-            SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            size = 6;
-        }
-        else{
-            SALTCHARS = "0123456789";
-            size = 20;
-        }
-        StringBuilder salt = new StringBuilder();
-        Random rnd = new Random();
-        while (salt.length() < size) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            salt.append(SALTCHARS.charAt(index));
-        }
-        return salt.toString();
-    }
 
     @RequestMapping(value="reservations", method = RequestMethod.GET)
     public @ResponseBody List<Reservations> getReservations(){
-        User user = getUserFromAuth();
+        UserAuth userAuth = new UserAuth();
+        User user = userAuth.getUserFromAuth(userService);
         return reservationsService.getAllByUserId(user.getID());
     }
 
     @RequestMapping(value="/reservations/{id}", method = RequestMethod.GET)
     public  @ResponseBody Reservations getAReservationByUserId(@PathVariable Long id){
-        User user = getUserFromAuth();
+        UserAuth userAuth = new UserAuth();
+        User user = userAuth.getUserFromAuth(userService);
         return reservationsService.getAReservationByUserId(id, user.getID());
-    }
-    @RequestMapping(value="/reservations/tickets/{id}", method = RequestMethod.GET)
-    public  @ResponseBody List<Tickets> getTickets(@PathVariable Long id){
-        User user = getUserFromAuth();
-        return ticketsService.getTickets(id, user.getID());
     }
 
     @DeleteMapping(path="/reservations/{id}")
@@ -165,12 +139,5 @@ public class ReservationsController {
         return ResponseEntity.ok().body("Reservation with code : " + id + " was deleted");
     }
 
-    public User getUserFromAuth(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userName = auth.getName();
-        final Optional<User> user = userService.findUserByUsername(userName);
-        user.orElseThrow(()-> new UsernameNotFoundException("No user found: "));
-        return user.get();
-    }
 }
     

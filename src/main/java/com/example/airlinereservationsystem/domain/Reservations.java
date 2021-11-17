@@ -23,10 +23,13 @@ public class Reservations {
 
     @ManyToOne()
     private User user;
+
     @ManyToOne()
     private User performedUser;
+
     @OneToMany ()
     private List<FlightInstance> flightInstances = new ArrayList<>();
+
     @PrePersist
     protected void onCreate() {
         created = new Date();
