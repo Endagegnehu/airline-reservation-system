@@ -105,7 +105,6 @@ public class ReservationsController {
         for(int i = 0; i < list.size(); i++) {
             Tickets ticket = new Tickets();
             ticket.setReservation(reservationObj);
-            ticket.setFlightInstance(list.get(i));
             ticket.setNumber(genrateRandomString("numeric"));
             ticket.setReservationCode(genrateRandomString("alpha"));
             ticketsResponse.add( ticketsService.addTicket(ticket));

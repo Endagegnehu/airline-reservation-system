@@ -26,13 +26,9 @@ public class Tickets {
     private Date updated;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    //@OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "reservation_id", referencedColumnName = "ID")
     private Reservations reservation;
-
-    @ManyToOne( fetch = FetchType.EAGER)
-    @JoinColumn(name = "flight_instance_id", referencedColumnName = "ID")
-    private FlightInstance flightInstance;
 
     @PrePersist
     protected void onCreate() {

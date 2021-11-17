@@ -21,11 +21,11 @@ public class Reservations {
     private Date created;
     private Date updated;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private User user;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private User performedUser;
-    @OneToMany (cascade = CascadeType.ALL)
+    @OneToMany ()
     private List<FlightInstance> flightInstances = new ArrayList<>();
     @PrePersist
     protected void onCreate() {
