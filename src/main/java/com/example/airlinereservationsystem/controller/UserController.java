@@ -4,9 +4,10 @@ import com.example.airlinereservationsystem.domain.User;
 import com.example.airlinereservationsystem.domain.UserRole;
 import com.example.airlinereservationsystem.dto.*;
 import com.example.airlinereservationsystem.service.interfaces.UserService;
+import com.example.airlinereservationsystem.util.ScheduledTasks;
+import com.example.airlinereservationsystem.util.constant.Roles;
 import com.example.airlinereservationsystem.util.exception.ErrorDetails;
 import com.example.airlinereservationsystem.util.security.JwtUtil;
-import com.example.airlinereservationsystem.util.constant.Roles;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,15 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticatedPrincipal;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.List;
 import java.util.*;
 
 
@@ -40,12 +36,16 @@ public class UserController {
     @Autowired
     JwtUtil jwtUtil;
 
+    @Autowired
+    ScheduledTasks scheduledTasks;
+
     @Qualifier("encoder")
     @Autowired
     PasswordEncoder passwordEncoder;
 
     @GetMapping("/users")
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+        scheduledTasks.reportCurrentTime();
         return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
