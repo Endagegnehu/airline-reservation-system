@@ -56,7 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/airports", "/airlines").hasAnyAuthority(Roles.ROLE_USER.toString()).
                 .antMatchers("/airports", "/airlines").permitAll()
                 .antMatchers("/addresses").permitAll()
-                .antMatchers("/admin/*").permitAll()
+                .antMatchers("/admin/add-role").hasAnyAuthority(Roles.ROLE_ADMIN.toString())
                 .antMatchers("/addresses/*").permitAll()
                 .antMatchers("/admin/airlines/{airlineCode}").permitAll()
                 .antMatchers("/admin/airports/{airportCode}").permitAll()
