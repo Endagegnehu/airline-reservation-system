@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<?> globalExceptionHandling(BadRequestException exception, WebRequest request){
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(), request.getDescription(true));
-        return ResponseHandler.respond(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseHandler.respond(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
     // For all other exceptions

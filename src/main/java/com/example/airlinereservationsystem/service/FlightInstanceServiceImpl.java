@@ -21,6 +21,7 @@ import java.util.Optional;
 
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 public class FlightInstanceServiceImpl implements FlightInstanceService {
 
     @Autowired

@@ -40,7 +40,10 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public Page<Flight> findAll(Pageable pageable) {
-        return flightRespository.findAll(pageable);
+        Page<Flight> flights = flightRespository.findAll(pageable);
+        if (flights.getSize() == 0 )
+            throw new ResourceNotFoundException("No flights found");
+        return flights;
     }
 
     @Override
