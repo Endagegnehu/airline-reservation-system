@@ -1,4 +1,3 @@
-
 package com.example.airlinereservationsystem.util;
 
 import com.example.airlinereservationsystem.domain.Email;
@@ -43,4 +42,3 @@ public class ScheduledTasks {
         String sendEmail(@RequestBody Email email);
     }
 }
-*/
